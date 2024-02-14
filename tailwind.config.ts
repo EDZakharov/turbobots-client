@@ -13,6 +13,7 @@ const config: Config = {
 				'gradient-conic':
 					'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
 			},
+
 			keyframes: {
 				opc: {
 					'0%,': { opacity: '0' },
@@ -32,6 +33,20 @@ const config: Config = {
 		},
 	},
 	darkMode: 'class',
-	plugins: [require('tailwindcss-animated')],
+
+	plugins: [
+		require('tailwindcss-animated'),
+		function ({ addUtilities }: any) {
+			const newUtilities = {
+				// '.custom-li': {
+				// 	color: '#3b82f6',
+				// },
+				// '.custom-li:hover': {
+				// 	background: 'purple',
+				// },
+			}
+			addUtilities(newUtilities, ['responsive', 'hover'])
+		},
+	],
 }
 export default config

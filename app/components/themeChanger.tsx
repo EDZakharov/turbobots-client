@@ -8,6 +8,9 @@ const darkSVG =
 const lightSVG =
 	'stroke-gray-300 fill-gray-300 hover:fill-gray-100 hover:stroke-gray-100'
 
+const liStylesTW =
+	'p-[20px] flex items-center gap-2 text-white hover:bg-gradient-to-tr hover:from-fuchsia-950 hover:via-purple-600 hover:to-fuchsia-500 dark:hover:bg-[conic-gradient(at_bottom_right,_var(--tw-gradient-stops))] dark:hover:from-teal-500 dark:via-teal-900 dark:hover:to-cyan-950 cursor-pointer'
+
 export default function ThemeChanger() {
 	// eslint-disable-next-line react-hooks/rules-of-hooks
 	const [mounted, setMounted] = useState(false)
@@ -23,7 +26,36 @@ export default function ThemeChanger() {
 		setTheme('light')
 	}
 
-	if (!mounted) return <div className={`${svgWH}`}></div>
+	if (!mounted)
+		return (
+			<div
+				className={`w-full ${liStylesTW} `}
+				onClick={() => {
+					handleDarkClick()
+				}}
+			>
+				<label
+					className={`relative inline-flex items-center cursor-pointer animate-fade animate-once animate-duration-[1000ms] transition `}
+				>
+					<svg
+						xmlns='http://www.w3.org/2000/svg'
+						fill='none'
+						viewBox='0 0 24 24'
+						stroke-width='1.5'
+						stroke='currentColor'
+						className={`${svgWH} flex-shrink-0 stroke-linecap-round stroke-linejoin-round
+            animate-spin animate-infinity animate-duration-[1000ms] transition dark:stroke-gray-400 stroke-gray-100`}
+					>
+						<path
+							stroke-linecap='round'
+							stroke-linejoin='round'
+							d='M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99'
+						/>
+					</svg>
+					<span className='ml-5'>Switch to dark</span>
+				</label>
+			</div>
+		)
 
 	if (resolvedTheme === 'dark') {
 		return <LightChanger handleLightClick={handleLightClick} />
@@ -35,16 +67,18 @@ export default function ThemeChanger() {
 
 function DarkChanger({ handleDarkClick }: any) {
 	return (
-		<div>
+		<div
+			className={`w-full ${liStylesTW} `}
+			onClick={() => {
+				handleDarkClick()
+			}}
+		>
 			<label className='relative inline-flex items-center cursor-pointer'>
 				<svg
-					className={`flex-shrink-0 ${svgWH} stroke-linecap-round stroke-linejoin-round ${lightSVG} animate-fade animate-once animate-duration-[400ms] transition`}
+					className={`flex-shrink-0 ${svgWH} stroke-linecap-round stroke-linejoin-round ${lightSVG} animate-fade animate-once animate-duration-[1000ms] transition`}
 					xmlns='http://www.w3.org/2000/svg'
 					strokeWidth='2'
 					viewBox='0 0 24 24'
-					onClick={() => {
-						handleDarkClick()
-					}}
 				>
 					<circle cx='12' cy='12' r='4' />
 					<path d='M12 8a2 2 0 1 0 4 4' />
@@ -57,6 +91,7 @@ function DarkChanger({ handleDarkClick }: any) {
 					<path d='m6.34 17.66-1.41 1.41' />
 					<path d='m19.07 4.93-1.41 1.41' />
 				</svg>
+				<span className='ml-5'>Switch to dark</span>
 			</label>
 		</div>
 	)
@@ -64,20 +99,23 @@ function DarkChanger({ handleDarkClick }: any) {
 
 function LightChanger({ handleLightClick }: any) {
 	return (
-		<div>
+		<div
+			className={`w-full ${liStylesTW}`}
+			onClick={() => {
+				handleLightClick()
+			}}
+		>
 			<label className='relative inline-flex items-center cursor-pointer'>
 				<svg
-					className={`flex-shrink-0 ${svgWH}  stroke-width-2 stroke-linecap-round stroke-linejoin-round ${darkSVG} animate-fade animate-once animate-duration-[400ms] transition`}
+					className={`flex-shrink-0 ${svgWH}  stroke-width-2 stroke-linecap-round stroke-linejoin-round ${darkSVG} animate-fade animate-once animate-duration-[1000ms] transition`}
 					xmlns='http://www.w3.org/2000/svg'
 					viewBox='0 0 24 24'
 					fill='none'
 					stroke='currentColor'
-					onClick={() => {
-						handleLightClick()
-					}}
 				>
 					<path d='M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z' />
 				</svg>
+				<span className='ml-5'>Switch to light</span>
 			</label>
 		</div>
 	)

@@ -1,6 +1,5 @@
 import { Metadata } from 'next'
-import Link from 'next/link'
-import ThemeChanger from '../components/themeChanger'
+import SideBar from '../ui/sideBar'
 
 export const metadata: Metadata = {
 	title: 'Dashboard',
@@ -8,20 +7,15 @@ export const metadata: Metadata = {
 
 export default function dashboard({ children }: { children: React.ReactNode }) {
 	return (
-		<div className='flex h-screen flex-row'>
-			<div className={`flex-none w-56 border `}>
-				{/* <SideNav /> */}menu12312
-				<Link
-					href='/'
-					className='flex items-center gap-5 self-start rounded-lg bg-blue-500 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-blue-400 md:text-base'
+		<div className='flex h-screen flex-col'>
+			<div className='flex flex-row'>
+				<div
+					className={`flex-none w-auto transition-all hover:delay-100 duration-300 ease-in hover:border-r dark:hover:border-r-gray-300`}
 				>
-					Home
-				</Link>
-			</div>
-			<div className={`grow border `}>{children}</div>
-			<div className={`flex-none border `}>
-				{/* <SideNav /> */}
-				<ThemeChanger />
+					<SideBar />
+				</div>
+				<div className={`grow `}>{children}</div>
+				<div className={`flex-none `}></div>
 			</div>
 		</div>
 	)

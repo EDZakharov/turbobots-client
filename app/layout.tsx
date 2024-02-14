@@ -14,7 +14,9 @@ export const metadata: Metadata = {
 
 const darkThemeColor =
 	'dark:bg-gradient-to-tr dark:from-black dark:via-slate-900 dark:to-cyan-1000'
-const lightThemeColor = 'bg-gradient-to-bl from-cyan-500 via-sky-400 to-sky-700'
+// const lightThemeColor = 'bg-gradient-to-bl from-cyan-500 via-sky-400 to-sky-700'
+const lightThemeColor =
+	'bg-gradient-to-bl from-slate-900 via-purple-900 to-slate-900'
 
 export default function RootLayout({
 	children,
