@@ -14,8 +14,7 @@ export default function dashboard({ children }: { children: React.ReactNode }) {
 				>
 					<SideBar />
 				</div>
-				<div className={`grow `}>{children}</div>
-				<div className={`flex-none `}></div>
+				{children}
 			</div>
 		</div>
 	)

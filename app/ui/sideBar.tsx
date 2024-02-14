@@ -1,5 +1,5 @@
+import ThemeChanger from '@/app/components/themeChanger'
 import Link from 'next/link'
-import ThemeChanger from '../components/themeChanger'
 
 const liStylesTW =
 	'p-[20px] flex items-center gap-2 text-white hover:bg-gradient-to-tr hover:from-fuchsia-950 hover:via-purple-600 hover:to-fuchsia-500 dark:hover:bg-[conic-gradient(at_bottom_right,_var(--tw-gradient-stops))] dark:hover:from-teal-500 dark:via-teal-900 dark:hover:to-cyan-950 cursor-pointer'
@@ -17,17 +17,11 @@ export default function SideBar() {
 							<svg
 								className={svgStylesTW}
 								xmlns='http://www.w3.org/2000/svg'
-								width='24'
-								height='24'
 								viewBox='0 0 24 24'
-								fill='none'
-								stroke='currentColor'
-								stroke-width='2'
-								stroke-linecap='round'
-								stroke-linejoin='round'
+								fill='currentColor'
 							>
-								<path d='m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z' />
-								<polyline points='9 22 9 12 15 12 15 22' />
+								<path d='M11.47 3.841a.75.75 0 0 1 1.06 0l8.69 8.69a.75.75 0 1 0 1.06-1.061l-8.689-8.69a2.25 2.25 0 0 0-3.182 0l-8.69 8.69a.75.75 0 1 0 1.061 1.06l8.69-8.689Z' />
+								<path d='m12 5.432 8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 0 1-.75-.75v-4.5a.75.75 0 0 0-.75-.75h-3a.75.75 0 0 0-.75.75V21a.75.75 0 0 1-.75.75H5.625a1.875 1.875 0 0 1-1.875-1.875v-6.198a2.29 2.29 0 0 0 .091-.086L12 5.432Z' />
 							</svg>
 						</i>
 						<span>Home</span>
@@ -94,17 +88,15 @@ export default function SideBar() {
 					<li className={liStylesTW}>
 						<i className={iStylesTW}>
 							<svg
-								xmlns='http://www.w3.org/2000/svg'
-								fill='none'
-								viewBox='0 0 24 24'
-								stroke-width='1.5'
-								stroke='currentColor'
 								className={svgStylesTW}
+								xmlns='http://www.w3.org/2000/svg'
+								viewBox='0 0 24 24'
+								fill='currentColor'
 							>
 								<path
-									stroke-linecap='round'
-									stroke-linejoin='round'
-									d='M5.636 5.636a9 9 0 1 0 12.728 0M12 3v9'
+									fill-rule='evenodd'
+									d='M12 2.25a.75.75 0 0 1 .75.75v9a.75.75 0 0 1-1.5 0V3a.75.75 0 0 1 .75-.75ZM6.166 5.106a.75.75 0 0 1 0 1.06 8.25 8.25 0 1 0 11.668 0 .75.75 0 1 1 1.06-1.06c3.808 3.807 3.808 9.98 0 13.788-3.807 3.808-9.98 3.808-13.788 0-3.808-3.807-3.808-9.98 0-13.788a.75.75 0 0 1 1.06 0Z'
+									clip-rule='evenodd'
 								/>
 							</svg>
 						</i>
