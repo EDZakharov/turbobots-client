@@ -27,6 +27,7 @@ export default function SideBar() {
 						<span>Home</span>
 					</li>
 				</Link>
+
 				<Link href='/dashboard'>
 					<li className={liStylesTW}>
 						<i className={iStylesTW}>
@@ -55,9 +56,9 @@ export default function SideBar() {
 								fill='currentColor'
 							>
 								<path
-									fill-rule='evenodd'
+									fillRule='evenodd'
 									d='M7.5 6a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0ZM3.751 20.105a8.25 8.25 0 0 1 16.498 0 .75.75 0 0 1-.437.695A18.683 18.683 0 0 1 12 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 0 1-.437-.695Z'
-									clip-rule='evenodd'
+									clipRule='evenodd'
 								/>
 							</svg>
 						</i>
@@ -74,9 +75,9 @@ export default function SideBar() {
 								fill='currentColor'
 							>
 								<path
-									fill-rule='evenodd'
+									fillRule='evenodd'
 									d='M7.5 6v.75H5.513c-.96 0-1.764.724-1.865 1.679l-1.263 12A1.875 1.875 0 0 0 4.25 22.5h15.5a1.875 1.875 0 0 0 1.865-2.071l-1.263-12a1.875 1.875 0 0 0-1.865-1.679H16.5V6a4.5 4.5 0 1 0-9 0ZM12 3a3 3 0 0 0-3 3v.75h6V6a3 3 0 0 0-3-3Zm-3 8.25a3 3 0 1 0 6 0v-.75a.75.75 0 0 1 1.5 0v.75a4.5 4.5 0 1 1-9 0v-.75a.75.75 0 0 1 1.5 0v.75Z'
-									clip-rule='evenodd'
+									clipRule='evenodd'
 								/>
 							</svg>
 						</i>
@@ -94,9 +95,9 @@ export default function SideBar() {
 								fill='currentColor'
 							>
 								<path
-									fill-rule='evenodd'
+									fillRule='evenodd'
 									d='M12 2.25a.75.75 0 0 1 .75.75v9a.75.75 0 0 1-1.5 0V3a.75.75 0 0 1 .75-.75ZM6.166 5.106a.75.75 0 0 1 0 1.06 8.25 8.25 0 1 0 11.668 0 .75.75 0 1 1 1.06-1.06c3.808 3.807 3.808 9.98 0 13.788-3.807 3.808-9.98 3.808-13.788 0-3.808-3.807-3.808-9.98 0-13.788a.75.75 0 0 1 1.06 0Z'
-									clip-rule='evenodd'
+									clipRule='evenodd'
 								/>
 							</svg>
 						</i>

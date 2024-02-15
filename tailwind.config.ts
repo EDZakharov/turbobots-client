@@ -23,6 +23,10 @@ const config: Config = {
 			animation: {
 				opc: '2s ease-in-out',
 			},
+			colors: {
+				'kaspa-color': '#6fc7ba',
+				'bitcoin-color': '#F7931A',
+			},
 		},
 		screens: {
 			sm: '640px',

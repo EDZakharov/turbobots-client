@@ -1,5 +1,5 @@
+import SideBar from '@/app/ui/sideBar'
 import { Metadata } from 'next'
-import SideBar from '../ui/sideBar'
 
 export const metadata: Metadata = {
 	title: 'Dashboard',
