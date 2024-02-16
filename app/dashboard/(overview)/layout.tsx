@@ -7,14 +7,14 @@ export const metadata: Metadata = {
 
 export default function dashboard({ children }: { children: React.ReactNode }) {
 	return (
-		<div className='flex h-screen flex-col'>
+		<div className='flex flex-col '>
 			<div className='flex flex-row'>
 				<div
-					className={`flex-none w-auto transition-all hover:delay-100 duration-300 ease-in hover:border-r dark:hover:border-r-gray-300`}
+					className={`flex-none w-auto transition-all hover:delay-100 duration-300 ease-in-out border-r border-r-transparent hover:border-r-white dark:hover:border-r-gray-300`}
 				>
 					<SideBar />
 				</div>
-				{children}
+				<div className='overflow-auto '>{children}</div>
 			</div>
 		</div>
 	)

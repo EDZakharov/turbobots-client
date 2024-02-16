@@ -9,7 +9,7 @@ const iStylesTW = 'mr-3'
 
 export default function SideBar() {
 	return (
-		<aside className='w-[60px]  overflow-hidden whitespace-nowrap shadow-sm hover:w-[250px] transition-all duration-300 ease-in-out '>
+		<aside className=' w-[60px]  overflow-hidden whitespace-nowrap shadow-sm hover:w-[250px] transition-all duration-300 ease-in-out '>
 			<ul className='flex flex-col h-screen'>
 				<Link href='/'>
 					<li className={liStylesTW}>

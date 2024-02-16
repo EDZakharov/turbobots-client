@@ -15,34 +15,13 @@ export function CryptoSymbolSVG({
 	width,
 }: ICryptoSymbolSVGProps): JSX.Element {
 	if (symbol === 'KASUSDT')
-		return (
-			<div className='flex justify-center m-1'>
-				<Image src={kaspaSVG} alt='kaspa-logo' width={width} />
-			</div>
-		)
-
+		return <Image src={kaspaSVG} alt='kaspa-logo' width={width} />
 	if (symbol === 'BTCUSDT')
-		return (
-			<div className='flex justify-center m-1'>
-				<Image src={bitcoinSVG} alt='bitcoin-logo' width={width} />
-			</div>
-		)
+		return <Image src={bitcoinSVG} alt='bitcoin-logo' width={width} />
 	if (symbol === 'UNIUSDT')
-		return (
-			<div className='flex justify-center m-1'>
-				<Image src={uniswapSVG} alt='uniswap-logo' width={width} />
-			</div>
-		)
+		return <Image src={uniswapSVG} alt='uniswap-logo' width={width} />
 	if (symbol === 'LTCUSDT')
-		return (
-			<div className='flex justify-center m-1'>
-				<Image src={liteCoinSVG} alt='uniswap-logo' width={width} />
-			</div>
-		)
+		return <Image src={liteCoinSVG} alt='uniswap-logo' width={width} />
 
-	return (
-		<div className='flex justify-center m-1'>
-			<Image src={coinPlaceholderSVG} alt='coin-logo' width={width} />
-		</div>
-	)
+	return <Image src={coinPlaceholderSVG} alt='coin-logo' width={width} />
 }

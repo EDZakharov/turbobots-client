@@ -26,6 +26,7 @@ const config: Config = {
 			colors: {
 				'kaspa-color': '#6fc7ba',
 				'bitcoin-color': '#F7931A',
+				'cards-color': '#464349',
 			},
 		},
 		screens: {

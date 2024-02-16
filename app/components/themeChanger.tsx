@@ -12,6 +12,7 @@ const liStylesTW =
 	'p-[20px] flex items-center gap-2 text-white hover:bg-gradient-to-tr hover:from-fuchsia-950 hover:via-purple-600 hover:to-fuchsia-500 dark:hover:bg-[conic-gradient(at_bottom_right,_var(--tw-gradient-stops))] dark:hover:from-teal-500 dark:via-teal-900 dark:hover:to-cyan-950 cursor-pointer'
 
 export default function ThemeChanger() {
+	//ADD DEVICE CHECK THEME
 	// eslint-disable-next-line react-hooks/rules-of-hooks
 	const [mounted, setMounted] = useState(false)
 	const { setTheme, resolvedTheme } = useTheme()
