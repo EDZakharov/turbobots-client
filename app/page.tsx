@@ -2,21 +2,19 @@ import Link from 'next/link'
 
 export default function Home() {
 	return (
-		<main className='flex min-h-screen flex-col items-center justify-between p-24'>
-			<div>
-				<Link
-					href='/dashboard'
-					className='flex items-center gap-5 self-start rounded-lg bg-blue-500 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-blue-400 md:text-base'
-				>
-					dashboard
-				</Link>
-				<Link
-					href='/login'
-					className='flex items-center gap-5 self-start rounded-lg bg-blue-500 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-blue-400 md:text-base'
-				>
-					login
-				</Link>
-			</div>
-		</main>
+		<div className='flex flex-col items-center justify-between p-24'>
+			<Link
+				href='/app/dashboard'
+				className='flex items-center gap-5 self-start rounded-lg bg-blue-500 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-blue-400 md:text-base'
+			>
+				dashboard
+			</Link>
+			<Link
+				href='/login'
+				className='flex items-center gap-5 self-start rounded-lg bg-blue-500 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-blue-400 md:text-base'
+			>
+				login
+			</Link>
+		</div>
 	)
 }

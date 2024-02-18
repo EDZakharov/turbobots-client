@@ -6,17 +6,17 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
 	title: {
-		template: '%s | TurboBots',
-		default: 'TurboBots',
+		template: '%s | Turbo Bots',
+		default: 'Turbo Bots',
 	},
 	description: 'The official TurboBots site',
 }
 
-const darkThemeColor =
-	'dark:bg-gradient-to-tr dark:from-cyan-950 dark:via-slate-900 dark:to-cyan-900'
+const darkThemeColor = 'dark:bg-slate-600'
+// 'dark:bg-gradient-to-tr dark:from-cyan-950 dark:via-cyan-9000 dark:to-cyan-900 bg-no-repeat'
 // const lightThemeColor = 'bg-gradient-to-bl from-cyan-500 via-sky-400 to-sky-700'
-const lightThemeColor =
-	'bg-gradient-to-bl from-green-200 via-slate-400 to-green-300'
+const lightThemeColor = 'bg-yelow-100'
+// 'bg-gradient-to-bl from-green-200 via-slate-400 to-green-300 bg-no-repeat'
 
 export default function RootLayout({
 	children,
@@ -24,9 +24,13 @@ export default function RootLayout({
 	children: React.ReactNode
 }>) {
 	return (
-		<html lang='en' suppressHydrationWarning>
+		<html
+			lang='en'
+			suppressHydrationWarning
+			className={`scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-600`}
+		>
 			<body
-				className={`${inter.className} ${lightThemeColor} ${darkThemeColor}`}
+				className={`${inter.className} ${lightThemeColor} ${darkThemeColor} flex flex-col items-center relative `}
 			>
 				<Providers>{children}</Providers>
 			</body>

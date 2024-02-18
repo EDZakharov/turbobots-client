@@ -8,25 +8,17 @@ const config: Config = {
 	],
 	theme: {
 		extend: {
-			backgroundImage: {
-				'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-				'gradient-conic':
-					'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
-			},
-
-			keyframes: {
-				opc: {
-					'0%,': { opacity: '0' },
-					'100%': { opacity: '100' },
-				},
-			},
-			animation: {
-				opc: '2s ease-in-out',
-			},
 			colors: {
 				'kaspa-color': '#6fc7ba',
 				'bitcoin-color': '#F7931A',
-				'cards-color': '#464349',
+				'cards-color': '#5F5A4E63',
+			},
+			boxShadow: {
+				'r-xl': '0 0 20px 0 rgba(0, 0, 0, 0.3)',
+				'rl-md': '0px 6px 16px 2px rgba(34, 60, 80, 0.26)',
+				'trl-md': '0px -3px 10px 2px rgba(34, 60, 80, 0.2)',
+				'brl-md': '0px 3px 10px 2px rgba(34, 60, 80, 0.2)',
+				'xy-md': '-1px 0px 25px 2px rgba(34, 60, 80, 0.27)',
 			},
 		},
 		screens: {
@@ -41,13 +33,11 @@ const config: Config = {
 
 	plugins: [
 		require('tailwindcss-animated'),
+		require('tailwind-scrollbar'),
 		function ({ addUtilities }: any) {
 			const newUtilities = {
 				// '.custom-li': {
 				// 	color: '#3b82f6',
-				// },
-				// '.custom-li:hover': {
-				// 	background: 'purple',
 				// },
 			}
 			addUtilities(newUtilities, ['responsive', 'hover'])
