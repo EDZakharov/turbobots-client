@@ -43,6 +43,10 @@ const config: Config = {
 				// Complex site-specific row configuration
 				layout: '',
 			},
+			gridTemplateColumns: {
+				'10-custom': '150px repeat(9, minmax(0, 1fr))',
+				'9-custom': 'auto repeat(9, minmax(0, 1fr))',
+			},
 		},
 		screens: {
 			sm: '640px',

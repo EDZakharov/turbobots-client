@@ -6,10 +6,10 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
 	title: {
-		template: '%s | Turbo Bots',
-		default: 'Turbo Bots',
+		template: '%s | LAVA TRADE',
+		default: 'LAVA TRADE',
 	},
-	description: 'The official TurboBots site',
+	description: 'The official Lava Trade site',
 }
 
 const darkThemeColor = 'dark:bg-slate-600'

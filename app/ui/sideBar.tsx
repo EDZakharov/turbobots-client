@@ -1,9 +1,8 @@
-import Link from 'next/link'
-import { SvgIcon } from './svgIcon'
+import SideBarNavElement from './sideBarNavElement'
 
 export default function SideBar() {
 	const menu = [
-		{ id: 1, tittle: 'Home', link: '/' },
+		// { id: 1, tittle: 'Home', link: '/' },
 		{ id: 2, tittle: 'Dashboard', link: '/app/dashboard' },
 		{ id: 3, tittle: 'Account', link: '/app/account' },
 		{ id: 4, tittle: 'Shop', link: '/app/shop' },
@@ -12,14 +11,22 @@ export default function SideBar() {
 
 	return (
 		<aside className=''>
-			<nav className=''>
-				<ul className='flex flex-col'>
+			<nav className='w-full'>
+				<ul className='flex flex-col gap-2'>
 					{menu.map((el) => (
-						<li key={el.id}>
-							<Link href={el.link} className='flex gap-2 hover:bg-gray-500'>
-								<SvgIcon name={el.tittle} color='gray-400' size={4} />
-								<span>{el.tittle}</span>
-							</Link>
+						<li
+							key={el.id}
+							className=' hover:bg-gray-200 dark:hover:bg-white/15 hover:text-black dark:hover:text-white transition-all rounded-r-xl pl-4 pr-4 text-sm '
+						>
+							<div>
+								<SideBarNavElement
+									link={el.link}
+									size={4}
+									tittle={el.tittle}
+									color=''
+									textStyle=''
+								/>
+							</div>
 						</li>
 					))}
 				</ul>
