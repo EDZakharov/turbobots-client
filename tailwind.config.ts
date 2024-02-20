@@ -11,7 +11,9 @@ const config: Config = {
 			colors: {
 				'kaspa-color': '#6fc7ba',
 				'bitcoin-color': '#F7931A',
-				'cards-color': '#5F5A4E63',
+				'cards-color': '#2E3847',
+				'cards-back-color': '#242A34B2',
+				'sidebar-color-dark': '#232E41',
 				'primary-color': '#141C23',
 				'secondary-color': '#141C23',
 			},
@@ -23,6 +25,8 @@ const config: Config = {
 				'brl-md': '0px 3px 10px 2px rgba(34, 60, 80, 0.2)',
 				'xy-md': '-1px 0px 25px 2px rgba(34, 60, 80, 0.27)',
 				primitive: '0px 8px 5px 5px rgba(0,0,0,0.25)',
+				main: '0px 0px 7px 0px #00000039',
+				bottom: '0px 14px 13px -11px rgba(0,0,0,0.43)',
 				aesthetic: '0 3px 10px rgb(0,0,0,0.2)',
 				demura: 'rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px',
 				brutal:
@@ -34,7 +38,11 @@ const config: Config = {
 				studydesk:
 					'0px 4px 16px rgba(17,17,26,0.1), 0px 8px 24px rgba(17,17,26,0.1), 0px 16px 56px rgba(17,17,26,0.1)',
 				sleek: 'rgba(13, 38, 76, 0.19) 0px 9px 20px',
+				jubilation: 'rgba(0, 0, 0, 0.24) 0px 3px 8px',
+				derek:
+					'0px 0px 0px 1px rgb(0 0 0 / 0.06),0px 1px 1px -0.5px rgb(0 0 0 / 0.06),0px 3px 3px -1.5px rgb(0 0 0 / 0.06), 0px 6px 6px -3px rgb(0 0 0 / 0.06),0px 12px 12px -6px rgb(0 0 0 / 0.06), 0px 24px 24px -12px rgb(0 0 0 / 0.06)',
 			},
+
 			gridTemplateRows: {
 				// Simple 16 row grid
 				'16': 'repeat(16, minmax(0, 1fr))',
@@ -46,6 +54,7 @@ const config: Config = {
 			gridTemplateColumns: {
 				'10-custom': '150px repeat(9, minmax(0, 1fr))',
 				'9-custom': 'auto repeat(9, minmax(0, 1fr))',
+				'3-custom': 'minmax(0, 300px) auto auto',
 			},
 		},
 		screens: {

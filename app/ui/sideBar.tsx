@@ -16,7 +16,7 @@ export default function SideBar() {
 					{menu.map((el) => (
 						<li
 							key={el.id}
-							className=' hover:bg-gray-200 dark:hover:bg-white/15 hover:text-black dark:hover:text-white transition-all rounded-r-xl pl-4 pr-4 text-sm '
+							className=' hover:bg-gray-200 dark:hover:bg-white/15 hover:text-black dark:hover:text-white transition-all rounded-r-xl pl-4 pr-2 text-sm '
 						>
 							<div>
 								<SideBarNavElement
