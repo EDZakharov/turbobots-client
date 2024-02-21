@@ -1,10 +1,31 @@
 import Exchange from '@/app/components/exchange'
+import { redirect } from 'next/navigation'
 
-const getData = async () => {
-	const data = await fetch('')
+async function loggedIN() {
+	const fetchData = await fetch('http://localhost:3000/api/login', {
+		method: 'POST',
+		body: JSON.stringify({
+			username: 'evgesha1',
+			password: 'SLoqwnxz1',
+			role: 'user',
+		}),
+	})
+
+	if (fetchData.status === 403) {
+		return
+	}
+
+	return fetchData.json()
 }
 
 export default async function Page() {
+	const getLogin = await loggedIN()
+	console.log(getLogin)
+	if (!getLogin) {
+		console.log('redirect')
+		redirect('/')
+	}
+
 	return (
 		<div className='flex flex-col gap-2'>
 			<h2 className='text-[16px]'>Dashboard</h2>

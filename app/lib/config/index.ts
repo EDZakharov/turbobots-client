@@ -1,6 +1,3 @@
-import dotenv from 'dotenv'
-dotenv.config()
-
 export const config = {
 	DB_IP: process.env['APP_DB_IP'],
 	DB_SECRET: process.env['APP_DB_SECRET'],
