@@ -16,6 +16,7 @@ const config: Config = {
 				'sidebar-color-dark': '#232E41',
 				'primary-color': '#141C23',
 				'secondary-color': '#141C23',
+				'sidebar-dark-color': '#f3ba2f',
 			},
 
 			boxShadow: {
@@ -54,7 +55,7 @@ const config: Config = {
 			gridTemplateColumns: {
 				'10-custom': '150px repeat(9, minmax(0, 1fr))',
 				'9-custom': 'auto repeat(9, minmax(0, 1fr))',
-				'3-custom': 'minmax(0, 300px) auto auto',
+				'3-custom': 'minmax(0, 400px) auto auto',
 			},
 		},
 		screens: {

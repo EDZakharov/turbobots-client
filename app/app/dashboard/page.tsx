@@ -1,5 +1,9 @@
 import Exchange from '@/app/components/exchange'
 
+const getData = async () => {
+	const data = await fetch('')
+}
+
 export default async function Page() {
 	return (
 		<div className='flex flex-col gap-2'>
@@ -23,30 +27,6 @@ export default async function Page() {
 								/>
 								<Exchange
 									name='binance'
-									className='w-[40px] h-[15px] hover:scale-110 transition-all'
-								/>
-								<Exchange
-									name='bybit'
-									className='w-[40px] h-[15px] hover:scale-110 transition-all'
-								/>
-								<Exchange
-									name='bybit'
-									className='w-[40px] h-[15px] hover:scale-110 transition-all'
-								/>
-								<Exchange
-									name='bybit'
-									className='w-[40px] h-[15px] hover:scale-110 transition-all'
-								/>
-								<Exchange
-									name='bybit'
-									className='w-[40px] h-[15px] hover:scale-110 transition-all'
-								/>
-								<Exchange
-									name='bybit'
-									className='w-[40px] h-[15px] hover:scale-110 transition-all'
-								/>
-								<Exchange
-									name='bybit'
 									className='w-[40px] h-[15px] hover:scale-110 transition-all'
 								/>
 							</div>

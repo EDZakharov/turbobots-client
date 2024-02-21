@@ -17,6 +17,8 @@ interface ISvgIconProps {
 export function SvgIcon({ name, color, size }: ISvgIconProps): JSX.Element {
 	if (name === 'Home')
 		return <HomeSvg className={`text-${color} w-${size} h${size}`} />
+	if (name === 'Bot settings')
+		return <HomeSvg className={`text-${color} w-${size} h${size}`} />
 	if (name === 'Dashboard')
 		return <PieSvg className={`text-${color} w-${size} h${size}`} />
 	if (name === 'Account')
