@@ -1,12 +1,17 @@
-import { connect } from 'mongoose'
-import { config } from '../app/lib/config'
+import { config } from '@/app/lib/config'
+import { connect, disconnect } from 'mongoose'
 
-async function dbConnect() {
+export async function dbConnect() {
 	try {
-		await connect(config.mongoDbUri)
+		await connect(config.DB_URL)
 	} catch (error) {
 		throw new Error('Error in connecting to mongoDb')
 	}
 }
-
-export default dbConnect
+export async function dbDisconnect() {
+	try {
+		await disconnect()
+	} catch (error) {
+		throw new Error('Error in connecting to mongoDb')
+	}
+}

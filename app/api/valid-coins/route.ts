@@ -1,5 +1,6 @@
 import { Coin } from '@/mongodb/models/coinsModel'
-import dbConnect from '@/mongodb/mongodb'
+import { dbConnect } from '@/mongodb/mongodb'
+
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET() {

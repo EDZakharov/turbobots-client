@@ -1,6 +1,6 @@
-import { auth } from '@/auth'
+// import { auth } from '@/auth'
 
-export async function getSession() {
-	const session = await auth()
-	return session
-}
+// export async function getSession() {
+// 	const session = await auth()
+// 	return session
+// }

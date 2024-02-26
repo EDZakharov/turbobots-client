@@ -8,12 +8,7 @@ const darkSVG =
 const lightSVG =
 	'stroke-gray-200 fill-gray-200 hover:fill-gray-400 hover:stroke-gray-400'
 
-// const liStylesTW =
-// 	'pl-[10px]  py-3 flex items-center hover:bg-gradient-to-tr hover:from-fuchsia-950 hover:via-purple-600 hover:to-fuchsia-500 dark:hover:bg-[conic-gradient(at_bottom_right,_var(--tw-gradient-stops))] dark:hover:from-teal-500 dark:via-teal-900 dark:hover:to-cyan-950 cursor-pointer'
-
 export default function ThemeChanger() {
-	//ADD DEVICE CHECK THEME
-	// eslint-disable-next-line react-hooks/rules-of-hooks
 	const [mounted, setMounted] = useState(false)
 	const { setTheme, resolvedTheme } = useTheme()
 
@@ -107,14 +102,4 @@ function LightChanger({ handleLightClick }: any) {
 			</label>
 		</>
 	)
-}
-
-{
-	/* <input type='checkbox' value='' className='sr-only peer' />
-					<div className="w-11 h-6 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full  peer-checked:after:bg-gray-900 peer-checked:after:border-gray-900 after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:border-gray-400 after:bg-gray-400 after:border after:rounded-full after:w-5 after:h-5 after:transition-all dark:border-none peer-checked:bg-gray-300 "></div> */
-}
-
-{
-	/* <input type='checkbox' value='' className='sr-only peer' />
-<div className="w-11 h-6 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full  peer-checked:after:bg-gray-900 peer-checked:after:border-gray-900 after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:border-gray-400 after:bg-gray-400 after:border after:rounded-full after:w-5 after:h-5 after:transition-all dark:border-none peer-checked:bg-gray-300 "></div> */
 }
