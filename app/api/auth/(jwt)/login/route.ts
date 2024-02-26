@@ -9,7 +9,7 @@ import { UserDTO } from '@/mongodb/serialize/SerializeUser'
 import { generateTokens, saveRefreshToken } from '@/mongodb/tokens/tokens'
 import bcrypt from 'bcrypt'
 import { cookies } from 'next/headers'
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest, NextResponse, userAgent } from 'next/server'
 
 interface IUserCredentials {
 	email: string
@@ -33,6 +33,7 @@ export async function POST(request: NextRequest) {
 		}
 		await dbConnect()
 		const { email, password }: IUserCredentials = await request.json()
+		const secureUserAgent = userAgent(request)
 		const user = await User.findOne({ email })
 
 		if (!user) {
@@ -77,9 +78,9 @@ export async function POST(request: NextRequest) {
 			)
 		}
 		const userDto = new UserDTO(user)
-
+		const payload = { ...secureUserAgent, ...userDto }
 		const tokens = generateTokens(
-			{ ...userDto },
+			{ ...payload },
 			checkAccessSecret,
 			checkRefreshSecret
 		)
@@ -107,6 +108,7 @@ export async function POST(request: NextRequest) {
 		return NextResponse.json(
 			{
 				userId: userDto.id,
+				userAgent: secureUserAgent,
 			},
 			{
 				headers: {

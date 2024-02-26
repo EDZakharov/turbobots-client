@@ -34,7 +34,8 @@ export async function authenticate(
 
 export async function clearCookies() {
 	const cookie = cookies()
-	cookie.delete('authjs.session-token')
+	cookie.delete('accessToken')
+	cookie.delete('refreshToken')
 }
 
 export async function register(
@@ -85,16 +86,20 @@ export async function formLogin(
 		const response = await login({ email, password })
 		const cookiesList = cookies()
 		const setCookieHeader = response.headers.get('set-cookie')
-		const refreshToken = setCookieHeader?.replace(accessTokenRegExp, '')
-		const accessToken = setCookieHeader?.replace(refreshTokenRegExp, '')
-		const parsedAccessCookies = parseCookie(accessToken)
-		const parsedRefreshCookies = parseCookie(refreshToken)
+		const refreshToken = setCookieHeader?.match(
+			refreshTokenRegExp
+		) as unknown as string
+		const accessToken = setCookieHeader?.match(
+			accessTokenRegExp
+		) as unknown as string
 
-		// console.log(parsedRefreshCookies)
+		const parsedAccessCookies = parseCookie(accessToken[0])
+		const parsedRefreshCookies = parseCookie(refreshToken[0])
 
 		if (parsedAccessCookies.accessToken && parsedRefreshCookies.refreshToken) {
 			cookiesList.delete('accessToken')
 			cookiesList.delete('refreshToken')
+
 			cookiesList.set({
 				name: 'accessToken',
 				value: parsedAccessCookies.accessToken,
@@ -104,6 +109,7 @@ export async function formLogin(
 				sameSite: 'strict',
 				maxAge: parsedAccessCookies['Max-Age'],
 			})
+
 			cookiesList.set({
 				name: 'refreshToken',
 				value: parsedRefreshCookies.refreshToken,
@@ -113,6 +119,8 @@ export async function formLogin(
 				sameSite: 'strict',
 				maxAge: parsedRefreshCookies['Max-Age'],
 			})
+
+			return navigateToDashboard()
 		}
 	} catch (error: any) {
 		return error.message

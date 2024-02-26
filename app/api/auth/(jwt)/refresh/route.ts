@@ -9,7 +9,7 @@ import { dbConnect, dbDisconnect } from '@/mongodb/mongodb'
 import { UserDTO } from '@/mongodb/serialize/SerializeUser'
 import { generateTokens, saveRefreshToken } from '@/mongodb/tokens/tokens'
 import { cookies } from 'next/headers'
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest, NextResponse, userAgent } from 'next/server'
 
 export async function PUT(request: NextRequest) {
 	try {
@@ -27,7 +27,10 @@ export async function PUT(request: NextRequest) {
 			)
 		}
 		const cookie = cookies()
+		const secureUserAgent = userAgent(request)
 		const refreshToken = cookie.get('refreshToken')
+		console.log('refreshToken ', refreshToken)
+
 		// const accessToken = cookie.get('accessToken')
 
 		if (!refreshToken) {
@@ -47,8 +50,9 @@ export async function PUT(request: NextRequest) {
 		const user = await User.findById(token.userId)
 
 		const userDto = new UserDTO(user)
+		const payload = { ...secureUserAgent, ...userDto }
 		const tokens = generateTokens(
-			{ ...userDto },
+			{ ...payload },
 			checkAccessSecret,
 			checkRefreshSecret
 		)

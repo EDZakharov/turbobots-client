@@ -65,8 +65,6 @@ export function validateRefreshToken(
 		const result = jwt.verify(refreshToken, refreshSecret)
 		return result
 	} catch (error) {
-		console.log(error)
-
 		return
 	}
 }
