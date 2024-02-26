@@ -15,8 +15,9 @@ export async function login({ email, password }: ILoginProps) {
 				email,
 				password,
 			}),
-			// cache: 'no-store',
+			cache: 'no-store',
 		})
+		// console.log(response)
 		if (!response.ok) {
 			throw JSON.parse(await response.text())
 		}

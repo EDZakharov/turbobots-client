@@ -73,7 +73,6 @@ export default function LoginForm() {
 
 function LoginButton() {
 	const { pending } = useFormStatus()
-	console.log(pending)
 	return (
 		<button className='mt-4 w-full dark:bg-gray-400' aria-disabled={pending}>
 			Log in

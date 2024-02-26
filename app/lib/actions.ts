@@ -90,10 +90,11 @@ export async function formLogin(
 		const parsedAccessCookies = parseCookie(accessToken)
 		const parsedRefreshCookies = parseCookie(refreshToken)
 
-		console.log(parsedAccessCookies)
-		console.log(parsedRefreshCookies)
+		// console.log(parsedRefreshCookies)
 
 		if (parsedAccessCookies.accessToken && parsedRefreshCookies.refreshToken) {
+			cookiesList.delete('accessToken')
+			cookiesList.delete('refreshToken')
 			cookiesList.set({
 				name: 'accessToken',
 				value: parsedAccessCookies.accessToken,
