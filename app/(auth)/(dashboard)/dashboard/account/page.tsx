@@ -1,4 +1,9 @@
-export default async function Page() {
+'use client'
+
+import { useAuth } from '@/app/(auth)/providers'
+
+export default function Page() {
+	const isSuccess = useAuth()
 	return (
 		<div className=''>
 			<div>Account</div>

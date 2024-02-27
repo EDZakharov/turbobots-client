@@ -107,8 +107,7 @@ export async function POST(request: NextRequest) {
 
 		return NextResponse.json(
 			{
-				userId: userDto.id,
-				userAgent: secureUserAgent,
+				message: 'Success!',
 			},
 			{
 				headers: {

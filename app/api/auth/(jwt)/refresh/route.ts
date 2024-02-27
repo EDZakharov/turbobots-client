@@ -29,9 +29,6 @@ export async function PUT(request: NextRequest) {
 		const cookie = cookies()
 		const secureUserAgent = userAgent(request)
 		const refreshToken = cookie.get('refreshToken')
-		console.log('refreshToken ', refreshToken)
-
-		// const accessToken = cookie.get('accessToken')
 
 		if (!refreshToken) {
 			return showUnauthorizedError()
@@ -76,7 +73,7 @@ export async function PUT(request: NextRequest) {
 		})
 		return NextResponse.json(
 			{
-				userId: userDto.id,
+				message: 'Success!',
 			},
 			{
 				headers: {

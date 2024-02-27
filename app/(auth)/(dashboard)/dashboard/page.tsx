@@ -1,6 +1,8 @@
+'use client'
 import Exchange from '@/app/components/exchange'
 
-export default async function Page() {
+export default function Page() {
+	// const isSuccess = useAuth()
 	return (
 		<div className='flex flex-col gap-2'>
 			<h2 className='text-[16px]'>Dashboard</h2>
