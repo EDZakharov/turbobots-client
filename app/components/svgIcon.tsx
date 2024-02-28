@@ -10,22 +10,29 @@ import {
 interface ISvgIconProps {
 	name: string
 	color: string
-	size: 4 | 6
-	// width: number
+	size?: 4 | 6
+	sizePx?: number
 }
 
-export function SvgIcon({ name, color, size }: ISvgIconProps): JSX.Element {
-	if (name === 'Home')
-		return <HomeSvg className={`text-${color} w-${size} h${size}`} />
-	if (name === 'Bot settings')
-		return <HomeSvg className={`text-${color} w-${size} h${size}`} />
-	if (name === 'Dashboard')
-		return <PieSvg className={`text-${color} w-${size} h${size}`} />
-	if (name === 'Account')
-		return <UserSvg className={`text-${color} w-${size} h${size}`} />
-	if (name === 'Shop')
-		return <ShopSvg className={`text-${color} w-${size} h${size}`} />
+export function SvgIcon({
+	name,
+	color,
+	size,
+	sizePx,
+}: ISvgIconProps): JSX.Element {
+	const classNameSvg = `text-${color} ${
+		sizePx ? `w-[${sizePx}px] h-[${sizePx}px]` : `w-${size} h-${size}`
+	} `
+
+	console.log(classNameSvg)
+
+	if (name === 'Home') return <HomeSvg className={classNameSvg} />
+	if (name === 'Bot settings') return <HomeSvg className={classNameSvg} />
+	if (name === 'Dashboard') return <PieSvg className={classNameSvg} />
+	if (name === 'Account') return <UserSvg className={classNameSvg} />
+	if (name === 'Shop') return <ShopSvg className={classNameSvg} />
 	if (name === 'Logout')
-		return <PowerSvg className={`text-${color} w-${size} h${size}`} />
-	return <QuestionSvg className={`text-${color} w-${size} h${size}`} />
+		return <PowerSvg fill={'blue'} className={classNameSvg} />
+
+	return <QuestionSvg className={classNameSvg} />
 }

@@ -13,7 +13,6 @@ export default async function Header() {
 				</div>
 				<div className='flex items-center gap-2 mr-2'>
 					<Button href='/' text='Sign Out' />
-
 					<ThemeChanger />
 				</div>
 			</div>

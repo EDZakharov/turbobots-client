@@ -12,12 +12,12 @@ export function QuestionSvg(props: any, className: any) {
 	)
 }
 
-export function PowerSvg(props: any, className: any) {
+export function PowerSvg(props?: any, className?: any, fill?: string) {
 	return (
 		<svg
 			xmlns='http://www.w3.org/2000/svg'
 			viewBox='0 0 24 24'
-			fill='currentColor'
+			fill={fill}
 			className={className}
 			{...props}
 		>

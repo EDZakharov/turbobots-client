@@ -1,6 +1,7 @@
 'use client'
 import Link from 'next/link'
 import { clearCookies } from '../lib/actions'
+import { SvgIcon } from './svgIcon'
 
 interface IHeaderButtonProps {
 	href?: string
@@ -19,7 +20,7 @@ const handleClick = (e: any, type?: 'signOut' | 'signIn') => {
 }
 
 const defaultStyle =
-	'z-10 hover:cursor-pointer text-[8px] border rounded-md px-1 hover:bg-gray-400/20 dark:hover:bg-white/10'
+	'z-10 hover:cursor-pointer border rounded-md hover:bg-gray-400/20 dark:hover:bg-white/10 flex gap-2'
 
 export default function Button({
 	href = '/',
@@ -30,7 +31,8 @@ export default function Button({
 
 	return (
 		<Link href={href} className={className} onClick={handleClick}>
-			{text}
+			<SvgIcon name={'Logout'} color={'white'} sizePx={4} />
+			<span className=''>{text}</span>
 		</Link>
 	)
 }
