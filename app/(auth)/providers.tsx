@@ -9,6 +9,7 @@ import { clearCookies } from '../lib/actions'
 const AuthContext = createContext({
 	isSuccess: false,
 	user: undefined,
+	logout: () => {},
 })
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
@@ -31,17 +32,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 	}, [isSuccess])
 
 	// const login = (userData: any) => {
-	// 	// Logout logic (API request ...)
+	// 	// Login logic (API request ...)
 	// 	setUser(userData)
 	// }
 
-	// const logout = () => {
-	// 	// Logout logic
-	// 	setUser(null)
-	// }
+	const logout = () => {
+		clearCookies()
+		setStateUser(null)
+	}
 
 	return (
-		<AuthContext.Provider value={{ isSuccess, user }}>
+		<AuthContext.Provider value={{ isSuccess, user, logout }}>
 			{children}
 		</AuthContext.Provider>
 	)
@@ -72,7 +73,7 @@ async function getMe() {
 
 // custom hook fot AuthContext
 export const useAuth = () => {
-	console.log('checkauth')
+	// console.log('checkauth')
 
 	return useContext(AuthContext)
 }

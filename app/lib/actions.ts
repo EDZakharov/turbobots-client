@@ -2,12 +2,15 @@
 // import { signIn } from '@/auth'
 import { AuthError } from 'next-auth'
 import { cookies } from 'next/headers'
-import { redirect } from 'next/navigation'
+import { permanentRedirect, redirect } from 'next/navigation'
 import { login } from './fetch/login'
 import { accessTokenRegExp, refreshTokenRegExp } from './regExp/tokensRegexp'
 import { parseCookie } from './utils/parseCookies'
 export async function navigateToDashboard() {
 	redirect(`/dashboard`)
+}
+export async function navigateToDashboardPermanent() {
+	permanentRedirect(`/dashboard`)
 }
 export async function navigateToLogin() {
 	redirect(`/login`)

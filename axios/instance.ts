@@ -19,12 +19,12 @@ axiosInterceptorInstance.interceptors.request.use(
 
 axiosInterceptorInstance.interceptors.response.use(
 	async (response) => {
-		console.log(response)
+		// console.log(response)
 		currentRetry = 0
 		return response
 	},
 	async (error: AxiosError) => {
-		console.log(error)
+		// console.log(error)
 		if (error.response && error.response.status === 401 && error.config) {
 			try {
 				if (currentRetry >= maxRetries) {

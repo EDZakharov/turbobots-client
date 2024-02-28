@@ -1,4 +1,4 @@
-import SideBarNavElement from './sideBarNavElement'
+import Button from '@/app/components/button'
 
 export default function SideBar() {
 	const menu = [
@@ -8,10 +8,11 @@ export default function SideBar() {
 		{ id: 3, tittle: 'Account', link: '/dashboard/account' },
 		{ id: 4, tittle: 'Shop', link: '/dashboard/shop' },
 		{ id: 5, tittle: 'Logout', link: '/' },
+		{ id: 6, tittle: 'Login', link: '/login' },
 	]
 
 	return (
-		<div className='row-span-8 row-start-1 row-end-10 pt-4 pr-4 overflow-auto scrollbar-none bg-gray-50 dark:bg-sidebar-color-dark  text-black dark:text-white '>
+		<div className='row-span-8 row-start-1 row-end-10 pt-4 pr-4 overflow-auto scrollbar-none bg-gray-50 dark:bg-sidebar-color-dark '>
 			<div className=''>
 				<aside className=''>
 					<nav className='w-full'>
@@ -19,17 +20,16 @@ export default function SideBar() {
 							{menu.map((el) => (
 								<li
 									key={el.id}
-									className=' hover:bg-gray-200 dark:hover:bg-white/15 hover:text-black dark:text-sidebar-dark-color dark:hover:text-white transition-all rounded-r-xl pl-4 pr-2 text-sm '
+									className=' hover:bg-gray-200 dark:hover:bg-white/15 hover:text-black  dark:hover:text-white transition-all rounded-r-xl px-7 text-sm '
 								>
-									<div>
-										<SideBarNavElement
-											link={el.link}
-											size={4}
-											tittle={el.tittle}
-											color=''
-											textStyle=''
-										/>
-									</div>
+									<Button
+										href={el.link}
+										svgColor={'text-white'}
+										tittle={el.tittle}
+										buttonName={el.tittle}
+										textColor='white'
+										className='flex items-center gap-4 h-8'
+									/>
 								</li>
 							))}
 						</ul>
@@ -39,4 +39,3 @@ export default function SideBar() {
 		</div>
 	)
 }
-

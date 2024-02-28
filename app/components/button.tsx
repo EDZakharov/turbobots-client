@@ -1,38 +1,41 @@
 'use client'
 import Link from 'next/link'
-import { clearCookies } from '../lib/actions'
+import { useRouter } from 'next/navigation'
+import { useAuth } from '../(auth)/providers'
 import { SvgIcon } from './svgIcon'
 
 interface IHeaderButtonProps {
 	href?: string
 	className?: string
-	text?: string
-	onClick?: any
-}
-
-const handleClick = (e: any, type?: 'signOut' | 'signIn') => {
-	// if (type === 'signOut') {
-	// 	signOut({ redirect: false }).then(() => {
-	// 		router.push('/')
-	// 	})
-	// }
-	clearCookies()
+	tittle: string
+	buttonName?: string
+	svgColor?: string
+	textColor?: string
 }
 
 const defaultStyle =
-	'z-10 hover:cursor-pointer border rounded-md hover:bg-gray-400/20 dark:hover:bg-white/10 flex gap-2'
+	'z-10 hover:cursor-pointer border rounded-md hover:bg-gray-400/20 dark:hover:bg-white/10 flex w-full items-center justify-between '
 
 export default function Button({
 	href = '/',
 	className = defaultStyle,
-	text = 'placeholder',
+	tittle = 'Button',
+	buttonName,
 }: IHeaderButtonProps) {
-	// const router = useRouter()
+	const { logout } = useAuth()
+	const router = useRouter()
+	const handleClick = (e: React.SyntheticEvent) => {
+		e.preventDefault()
+		if (tittle === 'Logout') {
+			logout()
+		}
+		router.push(href)
+	}
 
 	return (
 		<Link href={href} className={className} onClick={handleClick}>
-			<SvgIcon name={'Logout'} color={'white'} sizePx={4} />
-			<span className=''>{text}</span>
+			<SvgIcon name={buttonName} />
+			<span className=''>{tittle}</span>
 		</Link>
 	)
 }

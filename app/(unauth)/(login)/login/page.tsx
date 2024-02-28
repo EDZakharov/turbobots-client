@@ -1,16 +1,24 @@
-import { Metadata } from 'next/types'
+'use client'
+
+import { useAuth } from '@/app/(auth)/providers'
+import { navigateToDashboardPermanent } from '@/app/lib/actions'
+import { useEffect, useState } from 'react'
 import LoginForm from '../components/login-form'
 
-export const metadata: Metadata = {
-	title: 'Login',
-}
+export default function LoginPage() {
+	const { user } = useAuth()
+	const [isUser, setUser] = useState<boolean>(false)
+	useEffect(() => {
+		if (user) {
+			setUser(true)
+		}
 
-export default async function LoginPage() {
-	// const session = await getSession()
-	// console.log(session)
-	// if (session?.user) {
-	// 	redirect('/dashboard')
-	// }
+		return () => {
+			if (isUser) {
+				navigateToDashboardPermanent()
+			}
+		}
+	})
 
 	return (
 		<main className='flex items-center justify-center md:h-screen w-screen'>

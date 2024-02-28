@@ -4,7 +4,10 @@ import Main from './components/main/main'
 import SideBar from './components/sidebar/sideBar'
 
 export const metadata: Metadata = {
-	title: 'Dashboard',
+	title: {
+		template: '%s | LAVA TRADE',
+		default: 'Dashboard',
+	},
 }
 
 export default async function DashboardLayout({
