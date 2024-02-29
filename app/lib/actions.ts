@@ -1,6 +1,7 @@
 'use server'
 // import { signIn } from '@/auth'
 import { AuthError } from 'next-auth'
+import { revalidatePath } from 'next/cache'
 import { cookies } from 'next/headers'
 import { permanentRedirect, redirect } from 'next/navigation'
 import { login } from './fetch/login'
@@ -14,6 +15,10 @@ export async function navigateToDashboardPermanent() {
 }
 export async function navigateToLogin() {
 	redirect(`/login`)
+}
+
+export async function revalidatePathAction(path: string) {
+	revalidatePath(path)
 }
 
 export async function authenticate(

@@ -1,42 +1,15 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900&display=swap');
 @tailwind base;
+
+@layer base {
+	html {
+		@apply text-[#4f4f4f];
+	}
+	html.dark {
+		@apply text-neutral-50;
+		@apply bg-neutral-800;
+	}
+}
+
 @tailwind components;
 @tailwind utilities;
-
-/* :root {
-	--foreground-rgb: 200, 150, 140;
-	--background-start-rgb: 214, 219, 220;
-	--background-end-rgb: 200, 150, 150;
-}
-
-@media (prefers-color-scheme: dark) {
-	:root {
-		--foreground-rgb: 222, 150, 200;
-		--background-start-rgb: 222, 100, 0;
-		--background-end-rgb: 220, 200, 0;
-	}
-} */
-
-/* body {
-	backdrop-filter: none;
-} */
-
-/* @layer utilities {
-	.text-balance {
-		text-wrap: balance;
-	}
-} */
-/* 
-input[type='number'] {
-	-moz-appearance: textfield;
-	appearance: textfield;
-}
-
-input[type='number']::-webkit-inner-spin-button {
-	-webkit-appearance: none;
-	margin: 0;
-}
-
-input[type='number']::-webkit-outer-spin-button {
-	-webkit-appearance: none;
-	margin: 0;
-} */

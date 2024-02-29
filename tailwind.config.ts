@@ -56,6 +56,7 @@ const config: Config = {
 				'10-custom': '150px repeat(9, minmax(0, 1fr))',
 				'9-custom': 'auto repeat(9, minmax(0, 1fr))',
 				'3-custom': 'minmax(0, 400px) auto auto',
+				'4-custom': 'minmax(0, 700px) auto auto auto',
 			},
 		},
 		screens: {
@@ -71,6 +72,7 @@ const config: Config = {
 	plugins: [
 		require('tailwindcss-animated'),
 		require('tailwind-scrollbar'),
+		require('tw-elements/dist/plugin.cjs'),
 		function ({ addUtilities }: any) {
 			const newUtilities = {
 				// '.custom-li': {
