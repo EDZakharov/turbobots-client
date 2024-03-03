@@ -1,9 +1,10 @@
-import { AuthProvider } from './providers'
+import { AuthProvider } from './providers';
 
-export default function WithAuthLayout({
-	children,
+export default async function WithAuthLayout({
+    children,
 }: Readonly<{
-	children: React.ReactNode
+    children: React.ReactNode;
 }>) {
-	return <AuthProvider>{children}</AuthProvider>
+    return <AuthProvider>{children}</AuthProvider>;
+    // return <div>{children}</div>;
 }

@@ -11,12 +11,24 @@ export default function CustomInput({
     labelText,
     max,
     min,
+    step,
+    defaultState,
 }: ICustomInput) {
-    const [contactInfo, setContactInfo] = useState<string>('');
-
+    const [contactInfo, setContactInfo] = useState<string>(defaultState);
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
         const inputValue = event.target.value;
-        const numericValue = inputValue.replace(/\D/g, '');
+        const sanitizedValue = inputValue.replace(/[^\d.]/g, '');
+        const countDots = sanitizedValue.split('.').length - 1;
+        const hasMultipleDots = countDots > 1;
+
+        let numericValue;
+        if (hasMultipleDots) {
+            const parts = sanitizedValue.split('.');
+            numericValue = parts[0] + '.' + parts.slice(1, -1).join('');
+        } else {
+            numericValue = sanitizedValue;
+        }
+
         setContactInfo(numericValue);
     };
 
@@ -33,6 +45,9 @@ export default function CustomInput({
                     type="text"
                     className="z-10 w-full rounded-lg border dark:border-gray-700 border-gray-300 bg-transparent placeholder:text-end p-2 dark:hover:bg-white/5 hover:bg-secondary-color/5 focus:outline-none"
                     value={contactInfo}
+                    min={min}
+                    step={step}
+                    max={max}
                     onChange={handleInputChange}
                 />
                 <input
@@ -45,6 +60,7 @@ export default function CustomInput({
                     value={contactInfo}
                     min={min}
                     max={max}
+                    step={step}
                     onChange={handleInputChange}
                 />
                 <span className="z-0 absolute overflow-hidden right-2 top-3 dark:text-gray-500 text-gray-800 text-sm">

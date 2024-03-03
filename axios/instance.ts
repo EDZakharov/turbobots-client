@@ -1,68 +1,66 @@
-import axios, { AxiosError } from 'axios'
+import axios, { AxiosError, AxiosRequestConfig } from 'axios';
 
 const axiosInterceptorInstance = axios.create({
-	baseURL: 'http://localhost:3000/api/',
-	withCredentials: true,
-})
+    baseURL: 'http://localhost:3000/api/',
+    withCredentials: true,
+    headers: {
+        Accept: 'application/json',
+    },
+});
 
-const maxRetries = 1
-let currentRetry = 0
+const maxRetries = 1;
+let currentRetry = 0;
+let requestData: AxiosRequestConfig<any> | null = null;
 
 axiosInterceptorInstance.interceptors.request.use(
-	async (config) => {
-		return config
-	},
-	(error) => {
-		return Promise.reject(error)
-	}
-)
+    async (config) => {
+        return config;
+    },
+    (error) => {
+        return Promise.reject(error);
+    }
+);
 
 axiosInterceptorInstance.interceptors.response.use(
-	async (response) => {
-		// console.log(response)
-		currentRetry = 0
-		return response
-	},
-	async (error: AxiosError) => {
-		// console.log(error)
-		if (error.response && error.response.status === 401 && error.config) {
-			try {
-				if (currentRetry >= maxRetries) {
-					throw new Error()
-				}
+    async (response) => {
+        currentRetry = 0;
+        requestData = null;
+        return response;
+    },
+    async (error: AxiosError) => {
+        console.log(requestData);
 
-				currentRetry += 1
+        if (error.response && error.response.status === 401 && error.config) {
+            try {
+                if (currentRetry >= maxRetries) {
+                    throw new Error();
+                }
 
-				const response = await axiosInterceptorInstance.put(
-					'auth/refresh',
-					{},
-					{
-						headers: {
-							accept: 'application/json',
-						},
-						data: {},
-					}
-				)
-				const cookies = response.headers['set-cookie']
-				const originalRequest = error.config
+                currentRetry += 1;
 
-				originalRequest.headers.cookies = cookies
+                const response = await axiosInterceptorInstance.put(
+                    'auth/refresh'
+                );
+                const cookies = response.headers['Set-cookie'];
+                const originalRequest = error.config;
 
-				return axiosInterceptorInstance(originalRequest)
-			} catch (error) {
-				//TODO Error refreshing token
-			}
-		}
+                originalRequest.headers.cookies = cookies;
+                requestData = originalRequest;
+                return axiosInterceptorInstance(requestData);
+            } catch (error) {
+                //TODO Error refreshing token
+            }
+        }
 
-		if (error.response && error.response.status === 404 && error.config) {
-			//TODO
-		}
-		if (error.response && error.response.status === 400 && error.config) {
-			//TODO
-		}
+        if (error.response && error.response.status === 404 && error.config) {
+            //TODO
+        }
+        if (error.response && error.response.status === 400 && error.config) {
+            //TODO
+        }
 
-		return Promise.reject(error)
-	}
-)
+        return Promise.reject(error);
+    }
+);
 
-export default axiosInterceptorInstance
+export default axiosInterceptorInstance;

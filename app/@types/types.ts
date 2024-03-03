@@ -1,11 +1,11 @@
 export interface IBotConfig {
-    targetProfitPercent: number;
-    startOrderVolumeUSDT: number;
-    insuranceOrderSteps: number;
-    insuranceOrderPriceDeviationPercent: number;
-    insuranceOrderStepsMultiplier: number;
-    insuranceOrderVolumeUSDT: number;
-    insuranceOrderVolumeMultiplier: number;
+    targetProfitPercent: string;
+    startOrderVolumeUSDT: string;
+    insuranceOrderSteps: string;
+    insuranceOrderPriceDeviationPercent: string;
+    insuranceOrderStepsMultiplier: string;
+    insuranceOrderVolumeUSDT: string;
+    insuranceOrderVolumeMultiplier: string;
 }
 
 export enum InputTypes {
@@ -42,6 +42,8 @@ export interface ICustomInput {
     labelStyles?: string;
     labelText?: string;
     inputStyles?: string;
-    max?: number;
-    min?: number;
+    max?: string;
+    min?: string;
+    step?: string;
+    defaultState: string;
 }

@@ -1,79 +1,80 @@
-'use client'
+'use client';
 
-import axiosInterceptorInstance from '@/axios/instance'
-import { AxiosError } from 'axios'
-import { createContext, useContext, useEffect, useState } from 'react'
-import { clearCookies } from '../lib/actions'
+import axiosInterceptorInstance from '@/axios/instance';
+import { AxiosError } from 'axios';
+import { usePathname } from 'next/navigation';
+import { createContext, useEffect, useState } from 'react';
+import { clearCookies } from '../lib/actions';
 
 // Create context
 const AuthContext = createContext({
-	isSuccess: false,
-	user: undefined,
-	logout: () => {},
-})
+    isSuccess: false,
+    user: undefined,
+    logout: () => {},
+});
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-	const [user, setStateUser] = useState<null | any>(null)
+    const [user, setStateUser] = useState<null | any>(null);
 
-	const [isSuccess, setIsSuccess] = useState<boolean>(false)
-	// const router = useRouter()
+    const [isSuccess, setIsSuccess] = useState<boolean>(false);
 
-	useEffect(() => {
-		;(async () => {
-			const { userData, error } = await getMe()
+    const pathname = usePathname();
+    useEffect(() => {
+        (async () => {
+            const { userData, error } = await getMe();
 
-			if (error) {
-				await clearCookies()
-				return
-			}
-			setStateUser(userData.data)
-			setIsSuccess(true)
-		})()
-	}, [isSuccess])
+            if (error) {
+                await clearCookies();
+                return;
+            }
 
-	// const login = (userData: any) => {
-	// 	// Login logic (API request ...)
-	// 	setUser(userData)
-	// }
+            setStateUser(userData.data);
+            setIsSuccess(true);
+        })();
+    }, []);
 
-	const logout = () => {
-		clearCookies()
-		setStateUser(null)
-	}
+    // const login = (userData: any) => {
+    // 	// Login logic (API request ...)
+    // 	setUser(userData)
+    // }
 
-	return (
-		<AuthContext.Provider value={{ isSuccess, user, logout }}>
-			{children}
-		</AuthContext.Provider>
-	)
-}
+    const logout = () => {
+        clearCookies();
+        setStateUser(null);
+    };
+
+    return (
+        <AuthContext.Provider value={{ isSuccess, user, logout }}>
+            {children}
+        </AuthContext.Provider>
+    );
+};
 
 async function getMe() {
-	try {
-		const data = await axiosInterceptorInstance.get('auth/me', {
-			withCredentials: true,
-			headers: {
-				accept: 'application/json',
-			},
-			data: {},
-		})
+    try {
+        const data = await axiosInterceptorInstance.get('auth/me', {
+            withCredentials: true,
+            headers: {
+                accept: 'application/json',
+            },
+        });
 
-		return {
-			userData: data,
-			error: null,
-		}
-	} catch (e) {
-		const error = e as AxiosError
-		return {
-			userData: null,
-			error,
-		}
-	}
+        return {
+            userData: data,
+            error: null,
+        };
+    } catch (e) {
+        const error = e as AxiosError;
+        return {
+            userData: null,
+            error,
+        };
+    }
 }
 
 // custom hook fot AuthContext
-export const useAuth = () => {
-	// console.log('checkauth')
+// export const useAuth = () => {
+//     // console.log('checkauth')
 
-	return useContext(AuthContext)
-}
+//     return useContext(AuthContext);
+// };

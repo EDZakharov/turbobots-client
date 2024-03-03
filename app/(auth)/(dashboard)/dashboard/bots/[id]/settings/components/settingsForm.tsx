@@ -1,18 +1,18 @@
 'use client';
 
+import { IBotConfig } from '@/app/@types/types';
+import { formSettings } from '@/app/lib/actions';
+import { useFormState, useFormStatus } from 'react-dom';
 import CustomInput from './customInput';
 
-export default function SettingsForm() {
+export default function SettingsForm(data: IBotConfig) {
     const inputsWrapperCln = 'w-full';
-
-    const handleSubmite = (e: any) => {
-        e.preventDefault();
-    };
+    const [errorMessage, dispatch] = useFormState(formSettings, undefined);
 
     return (
         <form
             className="dark:bg-secondary-color rounded-lg shadow-main m-1 flex flex-col items-center"
-            onSubmit={handleSubmite}
+            action={dispatch}
         >
             <div className="flex flex-col gap-5 p-5">
                 <div className=" flex flex-col gap-5">
@@ -27,8 +27,10 @@ export default function SettingsForm() {
                                 labelText="Target profit"
                                 placeholder="%"
                                 required={true}
-                                min={0}
-                                max={100}
+                                min={'0'}
+                                step={'0.1'}
+                                max={'10'}
+                                defaultState={data.targetProfitPercent}
                             />
                         </div>
                         <div className={inputsWrapperCln}>
@@ -38,8 +40,10 @@ export default function SettingsForm() {
                                 labelText="Start order volume"
                                 placeholder="USDT"
                                 required={true}
-                                min={0}
-                                max={10000}
+                                min={'0'}
+                                step={'0.001'}
+                                max={'10000'}
+                                defaultState={data.startOrderVolumeUSDT}
                             />
                         </div>
                     </div>
@@ -56,8 +60,10 @@ export default function SettingsForm() {
                                 labelText="Volume"
                                 placeholder="USDT"
                                 required={true}
-                                min={0}
-                                max={10000}
+                                min={'0'}
+                                step={'0.001'}
+                                max={'10000'}
+                                defaultState={data.insuranceOrderVolumeUSDT}
                             />
                         </div>
                         <div className={inputsWrapperCln}>
@@ -67,8 +73,9 @@ export default function SettingsForm() {
                                 labelText="Steps count"
                                 placeholder="0-100"
                                 required={true}
-                                min={0}
-                                max={100}
+                                min={'0'}
+                                max={'100'}
+                                defaultState={data.insuranceOrderSteps}
                             />
                         </div>
                         <div className={inputsWrapperCln}>
@@ -78,8 +85,12 @@ export default function SettingsForm() {
                                 labelText="Volume multiplier"
                                 placeholder="0-10"
                                 required={true}
-                                min={0}
-                                max={10}
+                                min={'0'}
+                                step={'0.01'}
+                                max={'10'}
+                                defaultState={
+                                    data.insuranceOrderVolumeMultiplier
+                                }
                             />
                         </div>
                         <div className={inputsWrapperCln}>
@@ -89,8 +100,12 @@ export default function SettingsForm() {
                                 labelText="Steps multiplier"
                                 placeholder="0-10"
                                 required={true}
-                                min={0}
-                                max={10}
+                                min={'0'}
+                                step={'0.01'}
+                                max={'10'}
+                                defaultState={
+                                    data.insuranceOrderStepsMultiplier
+                                }
                             />
                         </div>
                         <div className={inputsWrapperCln}>
@@ -100,16 +115,35 @@ export default function SettingsForm() {
                                 labelText="Price deviation"
                                 placeholder="%"
                                 required={true}
-                                min={0}
-                                max={10}
+                                min={'0'}
+                                step={'0.01'}
+                                max={'10'}
+                                defaultState={
+                                    data.insuranceOrderPriceDeviationPercent
+                                }
                             />
                         </div>
                     </div>
                 </div>
             </div>
-            <button className="w-[200px] my-10 border dark:border-gray-700 border-gray-300 p-2 rounded-md dark:hover:bg-white/5 hover:bg-secondary-color/5">
-                Submit
-            </button>
+            {errorMessage && (
+                <>
+                    <p className="text-sm text-red-500">{errorMessage}</p>
+                </>
+            )}
+            <LoginButton />
         </form>
+    );
+}
+
+function LoginButton() {
+    const { pending } = useFormStatus();
+    return (
+        <button
+            className="w-[200px] my-10 border dark:border-gray-700 border-gray-300 p-2 rounded-md dark:hover:bg-white/5 hover:bg-secondary-color/5"
+            aria-disabled={pending}
+        >
+            Save
+        </button>
     );
 }
