@@ -1,14 +1,15 @@
 'use client'
 import Exchange from '@/app/components/exchange'
+import BotsStatisticsChart from './bots/components/botsStatistics'
 
 export default function Page() {
 	// const isSuccess = useAuth()
 	return (
 		<div className='flex flex-col gap-2'>
 			<h2 className='text-[16px]'>Dashboard</h2>
-			<div className='flex flex-col gap-9 text-sm'>
+			<div className='flex flex-col gap-9 text-sm '>
 				<div className='flex w-full h-[300px]  shadow-main p-5 dark:bg-cards-color'>
-					<div className='flex-1 bg-gray-600 rounded-l-md'>CHART</div>
+					<BotsStatisticsChart />
 					<div className='flex-initial bg-gray-400'>Exchange balance</div>
 					<div className='flex-initial bg-gray-500 rounded-r-md'>
 						Profit last 7 days
