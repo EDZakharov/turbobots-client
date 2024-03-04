@@ -1,6 +1,6 @@
 import { IBotConfig } from '@/app/@types/types';
 import { BotSettings } from '@/mongodb/models/settingsModel';
-import { dbConnect, dbDisconnect } from '@/mongodb/mongodb';
+import { dbConnect } from '@/mongodb/mongodb';
 import { JwtPayload, verify } from 'jsonwebtoken';
 import { NextRequest, NextResponse } from 'next/server';
 import { showUnauthorizedError } from '../../../exchanges/errors';
@@ -50,11 +50,10 @@ export async function POST(request: NextRequest) {
         await dbConnect();
         const { id } = verify(accessToken, secretA) as JwtPayload;
 
-        // console.log('ok');
-
         const foundDuplicate = await BotSettings.findOne({
             id,
         });
+
         if (!foundDuplicate) {
             const setSettings = new BotSettings({
                 id,
@@ -68,7 +67,7 @@ export async function POST(request: NextRequest) {
             });
 
             await setSettings.save();
-            await dbDisconnect();
+
             return showCreatedCustomResponse(`Settings was created`);
         } else {
             await BotSettings.updateOne(
@@ -85,7 +84,6 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        await dbDisconnect();
         return NextResponse.json(
             { message: 'Settings was updated' },
             {
@@ -103,9 +101,8 @@ export async function POST(request: NextRequest) {
 }
 export async function GET(request: NextRequest) {
     try {
-        await dbConnect();
         // const del = await BotSettings.deleteMany();
-
+        await dbConnect();
         const accessToken = request.headers
             .get('Set-Cookie')
             ?.match(/^accessToken=/)
@@ -118,14 +115,11 @@ export async function GET(request: NextRequest) {
 
         const secretA = process.env.APP_DB_SECRET_ACCESS_TOKEN || '';
 
-        await dbConnect();
         const { id } = verify(accessToken, secretA) as JwtPayload;
 
         const data = await BotSettings.findOne({
             id,
         });
-
-        await dbDisconnect();
 
         if (!data) {
             return NextResponse.json(

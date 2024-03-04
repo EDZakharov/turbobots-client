@@ -4,7 +4,7 @@ import {
 } from '@/constants/constants';
 import { TokenModel } from '@/mongodb/models/tokenModel';
 import { User } from '@/mongodb/models/usermodel';
-import { dbConnect, dbDisconnect } from '@/mongodb/mongodb';
+import { dbConnect } from '@/mongodb/mongodb';
 
 import { UserDTO } from '@/mongodb/serialize/SerializeUser';
 import { generateTokens, saveRefreshToken } from '@/mongodb/tokens/tokens';
@@ -13,6 +13,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function PUT(request: NextRequest) {
     try {
+        await dbConnect();
         const checkAccessSecret = process.env.APP_DB_SECRET_ACCESS_TOKEN;
         const checkRefreshSecret = process.env.APP_DB_SECRET_REFRESH_TOKEN;
         if (!checkAccessSecret || !checkRefreshSecret) {
@@ -24,33 +25,36 @@ export async function PUT(request: NextRequest) {
                 {
                     headers: {
                         'Content-Type': `application/json`,
+                        accept: `application/json`,
                     },
                     status: 506,
                 }
             );
         }
+
         const cookie = cookies();
 
-        const refreshToken = cookie.get('refreshToken');
+        const refreshToken = request.headers
+            .get('Set-cookie')
+            ?.replace(/refreshToken=/, '')
+            .toString();
 
         if (!refreshToken) {
             return showUnauthorizedError();
         }
-        await dbConnect();
 
-        const token = await TokenModel.findOne({
-            refreshToken: refreshToken.value,
+        const user = await TokenModel.findOne({
+            refreshToken: refreshToken,
         });
 
-        if (!token) {
-            await dbDisconnect();
+        if (!user) {
             return showUnauthorizedError();
         }
 
-        const user = await User.findById(token.userId);
+        const newUser = await User.findById(user.userId);
         // const secureUserAgent = userAgent(request)
 
-        const userDto = new UserDTO(user);
+        const userDto = new UserDTO(newUser);
         const payload = { ...userDto };
         const tokens = generateTokens(
             { ...payload },
@@ -59,7 +63,7 @@ export async function PUT(request: NextRequest) {
         );
 
         await saveRefreshToken(userDto.id, tokens.refreshToken);
-        await dbDisconnect();
+
         cookie.set('accessToken', tokens.accessToken, {
             httpOnly: true,
             sameSite: 'strict',
@@ -75,6 +79,7 @@ export async function PUT(request: NextRequest) {
             path: '/',
             maxAge: MAX_AGE_REFRESH_TOKEN,
         });
+
         return NextResponse.json(
             {
                 message: 'Success!',
@@ -87,7 +92,7 @@ export async function PUT(request: NextRequest) {
             }
         );
     } catch (error) {
-        // console.log(error)
+        // console.log(error);
 
         return NextResponse.json(
             {
@@ -97,7 +102,7 @@ export async function PUT(request: NextRequest) {
                 headers: {
                     'Content-Type': `application/json`,
                 },
-                status: 500,
+                status: 401,
             }
         );
     }

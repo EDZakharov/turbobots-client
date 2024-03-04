@@ -47,3 +47,18 @@ export interface ICustomInput {
     step?: string;
     defaultState: string;
 }
+
+export interface IBuyOrdersStepsToGrid {
+    [key: string]: {
+        step: number;
+        orderDeviation: number;
+        orderSecondaryPairVolume: number;
+        orderBasePairVolume: number;
+        orderPriceToStep: number;
+        orderAveragePrice: number;
+        orderTargetPrice: number;
+        orderTargetDeviation: number;
+        summarizedOrderSecondaryPairVolume: number;
+        summarizedOrderBasePairVolume: number;
+    };
+}

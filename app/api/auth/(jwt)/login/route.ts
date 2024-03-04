@@ -3,7 +3,7 @@ import {
     MAX_AGE_REFRESH_TOKEN,
 } from '@/constants/constants';
 import { User } from '@/mongodb/models/usermodel';
-import { dbConnect, dbDisconnect } from '@/mongodb/mongodb';
+import { dbConnect } from '@/mongodb/mongodb';
 
 import { UserDTO } from '@/mongodb/serialize/SerializeUser';
 import { generateTokens, saveRefreshToken } from '@/mongodb/tokens/tokens';
@@ -37,10 +37,21 @@ export async function POST(request: NextRequest) {
         await dbConnect();
         const { email, password }: IUserCredentials = await request.json();
 
+        if (!email || !password) {
+            return NextResponse.json(
+                { message: 'Missing data!' },
+                {
+                    headers: {
+                        'Content-Type': `application/json`,
+                    },
+                    status: 400,
+                }
+            );
+        }
+
         const user = await User.findOne({ email });
 
         if (!user) {
-            await dbDisconnect();
             return NextResponse.json(
                 { message: 'Email not found' },
                 {
@@ -69,7 +80,6 @@ export async function POST(request: NextRequest) {
         // const secureUserAgent = userAgent(request)
         const passwordIsMatch = await bcrypt.compare(password, user.password);
         if (!passwordIsMatch) {
-            await dbDisconnect();
             return NextResponse.json(
                 { message: 'Incorrect password' },
                 {
@@ -89,7 +99,7 @@ export async function POST(request: NextRequest) {
         );
 
         await saveRefreshToken(userDto.id, tokens.refreshToken);
-        await dbDisconnect();
+
         const cookie = cookies();
 
         cookie.set('accessToken', tokens.accessToken, {
@@ -120,7 +130,6 @@ export async function POST(request: NextRequest) {
             }
         );
     } catch (error) {
-        await dbDisconnect();
         return NextResponse.json(
             { message: 'Unable to login' },
             {

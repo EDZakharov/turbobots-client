@@ -1,17 +1,34 @@
-import { config } from '@/app/lib/config'
-import { connect, disconnect } from 'mongoose'
+import { config } from '@/app/lib/config';
+import mongoose from 'mongoose';
+
+interface ConnectionProps {
+    isConnected: boolean;
+}
+
+const connected: ConnectionProps = {
+    isConnected: false,
+};
 
 export async function dbConnect() {
-	try {
-		await connect(config.DB_URL)
-	} catch (error) {
-		throw new Error('Error in connecting to mongoDb')
-	}
-}
-export async function dbDisconnect() {
-	try {
-		await disconnect()
-	} catch (error) {
-		throw new Error('Error in connecting to mongoDb')
-	}
+    if (connected.isConnected) {
+        // console.log('already connected');
+        return;
+    }
+
+    if (mongoose.connections.length > 0) {
+        connected.isConnected = mongoose.connections[0].readyState === 1;
+        if (connected.isConnected) {
+            // console.log('use previous connection');
+            return;
+        }
+        await mongoose.disconnect();
+    }
+
+    try {
+        const db = await mongoose.connect(config.DB_URL);
+        // console.log('new connection');
+        connected.isConnected = db.connections[0].readyState === 1;
+    } catch (error) {
+        console.error('Error connecting to database:', error);
+    }
 }

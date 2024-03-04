@@ -1,7 +1,7 @@
 'use client';
 
 import { ICustomInput } from '@/app/@types/types';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 
 export default function CustomInput({
     placeholder,
@@ -31,11 +31,14 @@ export default function CustomInput({
 
         setContactInfo(numericValue);
     };
+    useEffect(() => {
+        setContactInfo(defaultState);
+    }, [defaultState]);
 
     return (
         <>
             <label
-                className="block dark:text-gray-400 text-sm overflow-hidden"
+                className="block dark:text-gray-400 text-[12px] overflow-hidden"
                 htmlFor={name}
             >
                 {labelText}

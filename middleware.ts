@@ -1,26 +1,145 @@
+import { jwtVerify } from 'jose';
+import { cookies } from 'next/headers';
 import { NextResponse, type NextRequest } from 'next/server';
+import {
+    accessTokenRegExp,
+    refreshTokenRegExp,
+} from './app/lib/regExp/tokensRegexp';
+import { parseCookie } from './app/lib/utils/parseCookies';
+
+const maxRetries = 2;
+let currentRetry = 0;
+
+interface IAToken {
+    accessToken: string;
+    Path: string;
+    // Expires: string;
+    'Max-Age': string;
+    Secure: string;
+    HttpOnly: string;
+    SameSite: string;
+}
+interface IRToken {
+    refreshToken: string;
+    Path: string;
+    // Expires: string;
+    'Max-Age': string;
+    Secure: string;
+    HttpOnly: string;
+    SameSite: string;
+}
 
 export async function middleware(request: NextRequest) {
     if (request.url.includes('/auth')) {
         console.log('@api');
         return NextResponse.next();
     }
-    // const currentPath = request.nextUrl.pathname;
-    // const cookieList = cookies();
-    // const accessToken = cookieList.get('accessToken')?.value;
-    // const refreshToken = cookieList.get('refreshToken')?.value;
-    // if (
-    //     !currentPath.includes('/login') &&
-    //     !currentPath.includes('/register') &&
-    //     !accessToken &&
-    //     !refreshToken
-    // ) {
-    //     if (currentPath !== '/') {
-    //         return NextResponse.redirect(new URL('/login', request.url));
-    //     }
-    // }
+    const currentPath = request.nextUrl.pathname;
+
+    // console.log(currentPath);
+
+    const cookieList = cookies();
+    const accessToken = cookieList.get('accessToken')?.value;
+    const refreshToken = cookieList.get('refreshToken')?.value;
+    if (
+        !currentPath.includes('/login') &&
+        !currentPath.includes('/register') &&
+        !accessToken &&
+        !refreshToken
+    ) {
+        if (currentPath !== '/') {
+            return NextResponse.redirect(new URL('/login', request.url));
+        }
+    }
+
+    if (currentPath.startsWith('/dashboard')) {
+        if (!accessToken || !isValidAccessToken(accessToken)) {
+            if (!refreshToken) {
+                return NextResponse.redirect(new URL('/login', request.url));
+            }
+            try {
+                if (currentRetry >= maxRetries) {
+                    throw new Error('Retries end');
+                }
+
+                currentRetry += 1;
+                const result = await fetch(
+                    'http://localhost:3000/api/auth/refresh',
+                    {
+                        method: 'PUT',
+                        credentials: 'include',
+                        headers: {
+                            'Content-type': 'application/json',
+                            'Set-cookie': `refreshToken=${refreshToken}`,
+                        },
+                        cache: 'no-store',
+                    }
+                );
+
+                const cookiesList = result.headers.get('Set-cookie');
+                const newAccessToken = cookiesList?.match(
+                    accessTokenRegExp
+                ) as unknown as string;
+                const newRefreshToken = cookiesList?.match(
+                    refreshTokenRegExp
+                ) as unknown as string;
+
+                const parsedAccessCookies = parseCookie(
+                    newAccessToken[0]
+                ) as IAToken;
+                const parsedRefreshCookies = parseCookie(
+                    newRefreshToken[0]
+                ) as IRToken;
+
+                currentRetry = 0;
+                const response = NextResponse.redirect(new URL(request.url));
+                response.cookies.set(
+                    'accessToken',
+                    parsedAccessCookies.accessToken,
+                    {
+                        path: parsedAccessCookies.Path,
+                        maxAge: +parsedAccessCookies['Max-Age'],
+                        secure: true,
+                        httpOnly: true,
+                        sameSite: 'strict',
+                    }
+                );
+                response.cookies.set(
+                    'refreshToken',
+                    parsedRefreshCookies.refreshToken,
+                    {
+                        path: parsedRefreshCookies.Path,
+                        maxAge: +parsedRefreshCookies['Max-Age'],
+                        secure: true,
+                        httpOnly: true,
+                        sameSite: 'strict',
+                    }
+                );
+
+                return response;
+            } catch (error) {
+                console.log(error);
+
+                return NextResponse.redirect(new URL('/login', request.url));
+            }
+        }
+    }
+    return NextResponse.next();
+}
+
+async function isValidAccessToken(accessToken: string): Promise<boolean> {
+    const checkAccessSecret = process.env.APP_DB_SECRET_ACCESS_TOKEN || '';
+    try {
+        await jwtVerify(
+            accessToken,
+            new TextEncoder().encode(checkAccessSecret)
+        );
+        return true;
+    } catch (error) {
+        return false;
+    }
 }
 
 export const config = {
-    matcher: ['/((?!.+\\.[\\w]+$|_next).*)', '/', '/(api|trpc)(.*)'],
+    matcher: ['/', '/dashboard/:path*', '/login', '/register'],
 };

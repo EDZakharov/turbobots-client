@@ -1,6 +1,5 @@
 'use server';
 // import { signIn } from '@/auth'
-import axiosInterceptorInstance from '@/axios/instance';
 import { AuthError } from 'next-auth';
 import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
@@ -87,6 +86,7 @@ export async function register(
         throw error;
     }
 }
+
 export async function formLogin(
     prevState: string | undefined,
     formData: FormData
@@ -168,19 +168,20 @@ export async function formSettings(
         ) {
             throw new Error('Missing data');
         }
-        const cookieList = cookies();
 
-        const accessToken = cookieList.get('accessToken')?.value;
+        const cookiesList = cookies();
+
+        const accessToken = cookiesList.get('accessToken')?.value;
 
         const response = await fetch(
             `http://localhost:3000/api/bots/1/settings`,
             {
                 method: 'POST',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Set-Cookie': `accessToken=${accessToken}`,
+                    'Set-cookie': `accessToken=${accessToken}`,
                 },
-
                 body: JSON.stringify({
                     targetProfitPercent,
                     startOrderVolumeUSDT,
@@ -193,55 +194,96 @@ export async function formSettings(
                 cache: 'no-store',
             }
         );
-
-        // revalidatePath('/dashboard/bots/1/settings');
-        if (response.ok) {
-            // console.log(await response.json());
-            revalidatePath(`/dashboard/bots/1/settings`);
-            // permanentRedirect(`/dashboard/bots/1/settings`);
-        } else {
-            const { message } = await response.json();
-            throw new Error(message);
-        }
     } catch (error: any) {
+        console.log(error.message);
         return error.message;
     }
 }
 
-export async function getFormSettingsDefaultData(botId: string) {
+export async function getFormSettingsDefaultData(
+    botId: string
+    // pathname: string
+) {
     try {
         if (!botId) {
             throw new Error('Missing data');
         }
         const cookieList = cookies();
-
         const accessToken = cookieList.get('accessToken')?.value;
+        const refreshToken = cookieList.get('refreshToken')?.value;
 
-        const { data } = await axiosInterceptorInstance.get(
+        // const { data } = await instance.get(`bots/${botId}/settings`, {
+        //     headers: {
+        //         'Set-cookie': `accessToken=${accessToken}`,
+        //     },
+        // });
+
+        const response = await fetch(
             `http://localhost:3000/api/bots/${botId}/settings`,
             {
+                method: 'GET',
                 headers: {
+                    'Content-Type': 'application/json',
                     'Set-Cookie': `accessToken=${accessToken}`,
                 },
+                cache: 'no-store',
             }
         );
+        revalidatePath(`/dashboard/bots/${botId}/settings`);
 
-        // const response = await fetch(
-        //     `http://localhost:3000/api/bots/${botId}/settings`,
-        //     {
-        //         method: 'GET',
-        //         headers: {
-        //             'Content-Type': 'application/json',
-        //             'Set-Cookie': `accessToken=${accessToken}`,
-        //         },
-        //         cache: 'no-store',
-        //     }
-        // );
-        // revalidatePath(`/dashboard/bots/${botId}/settings`);
-        // redirect(`/dashboard/bots/${botId}/settings`);
-        return data;
+        return response.json();
     } catch (error: any) {
-        console.log(error);
+        // revalidatePath(`/dashboard/bots/${botId}/settings`);
+        console.log(error.message);
+
+        return error.message;
+    }
+}
+
+export async function setCookie(setCookieHeader: string, currentPath?: string) {
+    try {
+        const cookieList = cookies();
+
+        const refreshToken = setCookieHeader?.match(
+            refreshTokenRegExp
+        ) as unknown as string;
+        const accessToken = setCookieHeader?.match(
+            accessTokenRegExp
+        ) as unknown as string;
+
+        const parsedAccessCookies = parseCookie(accessToken[0]);
+        const parsedRefreshCookies = parseCookie(refreshToken[0]);
+
+        if (
+            parsedAccessCookies.accessToken &&
+            parsedRefreshCookies.refreshToken
+        ) {
+            cookieList.delete('accessToken');
+            cookieList.delete('refreshToken');
+
+            cookieList.set({
+                name: 'accessToken',
+                value: parsedAccessCookies.accessToken,
+                secure: true,
+                httpOnly: true,
+                path: '/',
+                sameSite: 'strict',
+                maxAge: parsedAccessCookies['Max-Age'],
+            });
+
+            cookieList.set({
+                name: 'refreshToken',
+                value: parsedRefreshCookies.refreshToken,
+                secure: true,
+                httpOnly: true,
+                path: '/',
+                sameSite: 'strict',
+                maxAge: parsedRefreshCookies['Max-Age'],
+            });
+        }
+    } catch (error: any) {
+        // revalidatePath(`/dashboard/bots/${botId}/settings`);
+        console.log(error.message);
 
         return error.message;
     }

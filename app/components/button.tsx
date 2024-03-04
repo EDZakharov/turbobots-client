@@ -1,6 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '../(auth)/providers';
 import { SvgIcon } from './svgIcon';
 
 interface IHeaderButtonProps {
@@ -21,12 +22,12 @@ export default function Button({
     tittle = 'Button',
     buttonName,
 }: IHeaderButtonProps) {
-    // const { logout } = useAuth();
+    const { logout } = useAuth();
     const router = useRouter();
     const handleClick = (e: React.SyntheticEvent) => {
         e.preventDefault();
         if (tittle === 'Logout') {
-            // logout();
+            logout();
         }
         router.push(href);
     };

@@ -1,46 +1,12 @@
 export const SettingsSkeleton = () => {
-    const inputsWrapperCln = 'w-full';
     return (
-        <div className=" dark:bg-secondary-color rounded-lg shadow-main m-1 flex flex-col items-center">
-            <div className="flex flex-col gap-5 p-5">
-                <div className=" flex flex-col gap-5">
-                    <span className="text-xl w-[170px] bg-gray-800/10 dark:bg-white/10 animate-pulse text-white/0">
-                        Strategy:
-                    </span>
-                    <div className="flex gap-5">
-                        <div className={inputsWrapperCln}>
-                            <InputSkeleton />
-                        </div>
-                        <div className={inputsWrapperCln}>
-                            <InputSkeleton />
-                        </div>
-                    </div>
-                </div>
-                <div className="flex flex-col gap-5 ">
-                    <span className="text-xl w-[170px] bg-gray-800/10 dark:bg-white/10 animate-pulse text-white/0">
-                        Insurance orders:
-                    </span>
-                    <div className="grid grid-cols-2-custom relative gap-5">
-                        <div className={inputsWrapperCln}>
-                            <InputSkeleton />
-                        </div>
-                        <div className={inputsWrapperCln}>
-                            <InputSkeleton />
-                        </div>
-                        <div className={inputsWrapperCln}>
-                            <InputSkeleton />
-                        </div>
-                        <div className={inputsWrapperCln}>
-                            <InputSkeleton />
-                        </div>
-                        <div className={inputsWrapperCln}>
-                            <InputSkeleton />
-                        </div>
-                    </div>
+        <div className="flex flex-col">
+            <span className="text-xl m-5 text-white/0">Bot strategy</span>
+            <div className="flex gap-5 mr-5">
+                <div className="flex-initial">
+                    <StrategyOptionsSkeleton />
                 </div>
             </div>
-
-            <ButtonSkeleton />
         </div>
     );
 };
@@ -75,5 +41,52 @@ function InputSkeleton() {
                 </span>
             </div>
         </>
+    );
+}
+
+function StrategyOptionsSkeleton() {
+    const inputsWrapperCln = 'w-full';
+    return (
+        <div className=" dark:bg-secondary-color rounded-lg shadow-main m-1 flex flex-col items-center">
+            <div className="flex flex-col gap-5 p-5">
+                <div className=" flex flex-col gap-5">
+                    <span className="text-md w-[170px] bg-gray-800/10 dark:bg-white/10 animate-pulse text-white/0">
+                        Strategy:
+                    </span>
+                    <div className="flex gap-5">
+                        <div className={inputsWrapperCln}>
+                            <InputSkeleton />
+                        </div>
+                        <div className={inputsWrapperCln}>
+                            <InputSkeleton />
+                        </div>
+                    </div>
+                </div>
+                <div className="flex flex-col gap-5 ">
+                    <span className="text-md w-[170px] bg-gray-800/10 dark:bg-white/10 animate-pulse text-white/0">
+                        Insurance orders:
+                    </span>
+                    <div className="grid grid-cols-2-custom relative gap-5">
+                        <div className={inputsWrapperCln}>
+                            <InputSkeleton />
+                        </div>
+                        <div className={inputsWrapperCln}>
+                            <InputSkeleton />
+                        </div>
+                        <div className={inputsWrapperCln}>
+                            <InputSkeleton />
+                        </div>
+                        <div className={inputsWrapperCln}>
+                            <InputSkeleton />
+                        </div>
+                        <div className={inputsWrapperCln}>
+                            <InputSkeleton />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <ButtonSkeleton />
+        </div>
     );
 }

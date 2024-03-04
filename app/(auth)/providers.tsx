@@ -1,80 +1,56 @@
 'use client';
 
-import axiosInterceptorInstance from '@/axios/instance';
-import { AxiosError } from 'axios';
-import { usePathname } from 'next/navigation';
-import { createContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import { clearCookies } from '../lib/actions';
 
 // Create context
+
+interface IAuthContext {
+    login: () => void;
+    logout: () => void;
+    isAuthenticated: boolean;
+}
+
 const AuthContext = createContext({
-    isSuccess: false,
-    user: undefined,
+    login: () => {},
     logout: () => {},
-});
+    isAuthenticated: false,
+} as IAuthContext);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-    const [user, setStateUser] = useState<null | any>(null);
+    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
-    const [isSuccess, setIsSuccess] = useState<boolean>(false);
-
-    const pathname = usePathname();
     useEffect(() => {
-        (async () => {
-            const { userData, error } = await getMe();
-
-            if (error) {
-                await clearCookies();
-                return;
+        const fetchUserData = async () => {
+            try {
+                // const { data } = await instance.get('auth/me', {
+                //     withCredentials: true,
+                // });
+                // if (data) {
+                //     setIsAuthenticated(true);
+                // }
+            } catch (error) {
+                setIsAuthenticated(false);
+                console.error('Ошибка загрузки данных пользователя:', error);
             }
+        };
+        fetchUserData();
+    }, [isAuthenticated]);
 
-            setStateUser(userData.data);
-            setIsSuccess(true);
-        })();
-    }, []);
-
-    // const login = (userData: any) => {
-    // 	// Login logic (API request ...)
-    // 	setUser(userData)
-    // }
+    const login = async () => {};
 
     const logout = () => {
         clearCookies();
-        setStateUser(null);
     };
 
     return (
-        <AuthContext.Provider value={{ isSuccess, user, logout }}>
+        <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
             {children}
         </AuthContext.Provider>
     );
 };
 
-async function getMe() {
-    try {
-        const data = await axiosInterceptorInstance.get('auth/me', {
-            withCredentials: true,
-            headers: {
-                accept: 'application/json',
-            },
-        });
-
-        return {
-            userData: data,
-            error: null,
-        };
-    } catch (e) {
-        const error = e as AxiosError;
-        return {
-            userData: null,
-            error,
-        };
-    }
-}
-
 // custom hook fot AuthContext
-// export const useAuth = () => {
-//     // console.log('checkauth')
-
-//     return useContext(AuthContext);
-// };
+export function useAuth() {
+    return useContext(AuthContext);
+}

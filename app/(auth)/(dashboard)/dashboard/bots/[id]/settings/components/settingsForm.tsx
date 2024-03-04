@@ -2,6 +2,7 @@
 
 import { IBotConfig } from '@/app/@types/types';
 import { formSettings } from '@/app/lib/actions';
+import { SpinSvg } from '@/app/ui/svg-components/svg-components';
 import { useFormState, useFormStatus } from 'react-dom';
 import CustomInput from './customInput';
 
@@ -11,12 +12,12 @@ export default function SettingsForm(data: IBotConfig) {
 
     return (
         <form
-            className="dark:bg-secondary-color rounded-lg shadow-main m-1 flex flex-col items-center"
+            className="h-full dark:bg-secondary-color rounded-lg shadow-main m-1 flex flex-col items-center"
             action={dispatch}
         >
             <div className="flex flex-col gap-5 p-5">
                 <div className=" flex flex-col gap-5">
-                    <span className="text-xl dark:text-gray-400">
+                    <span className="text-md dark:text-gray-400">
                         Strategy:
                     </span>
                     <div className="flex gap-5">
@@ -49,7 +50,7 @@ export default function SettingsForm(data: IBotConfig) {
                     </div>
                 </div>
                 <div className="flex flex-col gap-5 ">
-                    <span className="text-xl dark:text-gray-400">
+                    <span className="text-md dark:text-gray-400">
                         Insurance orders:
                     </span>
                     <div className="grid grid-cols-2-custom relative gap-5">
@@ -140,10 +141,16 @@ function LoginButton() {
     const { pending } = useFormStatus();
     return (
         <button
-            className="w-[200px] my-10 border dark:border-gray-700 border-gray-300 p-2 rounded-md dark:hover:bg-white/5 hover:bg-secondary-color/5"
-            aria-disabled={pending}
+            className="w-[200px] my-10 border dark:border-gray-700 border-gray-300 p-2 rounded-md dark:hover:bg-white/5 hover:bg-secondary-color/5 flex flex-col items-center disabled:cursor-not-allowed"
+            disabled={pending}
         >
-            Save
+            {pending ? (
+                <span className="animate-pulse">
+                    <SpinSvg size="24" />
+                </span>
+            ) : (
+                <span className="">Save</span>
+            )}
         </button>
     );
 }

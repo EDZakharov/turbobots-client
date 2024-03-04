@@ -1,46 +1,20 @@
-'use client';
-
 import { getFormSettingsDefaultData } from '@/app/lib/actions';
-import { SettingsSkeleton } from '@/app/ui/skeletons';
-import { useEffect, useState } from 'react';
 import SettingsForm from './components/settingsForm';
+import SettingsTable from './components/settingsTable';
 
-// export const runtime = 'edge';
-
-export default function Page({ params }: { params: { id: string } }) {
-    // revalidatePath(`/dashboard/bots/${params.id}/settings`);
-    const [loading, setLoading] = useState(true);
-    const [state, setState] = useState({
-        targetProfitPercent: '',
-        startOrderVolumeUSDT: '',
-        insuranceOrderSteps: '',
-        insuranceOrderPriceDeviationPercent: '',
-        insuranceOrderStepsMultiplier: '',
-        insuranceOrderVolumeUSDT: '',
-        insuranceOrderVolumeMultiplier: '',
-    });
-
-    useEffect(() => {
-        const getData = async () => {
-            const data = await getFormSettingsDefaultData(params.id);
-            setLoading(false);
-            setState(data);
-        };
-        getData();
-    }, []);
+export default async function Page({ params }: { params: { id: string } }) {
+    const data = await getFormSettingsDefaultData(params.id);
 
     return (
         <div className="flex flex-col">
-            <span className="text-xl mx-5">Bot {params.id} settings</span>
-            <div className="flex">
+            <span className="text-xl m-5 block">Bot {params.id} strategy</span>
+            <div className="flex gap-5 mr-5">
                 <div className="flex-initial">
-                    {loading ? (
-                        <SettingsSkeleton />
-                    ) : (
-                        <SettingsForm {...state} />
-                    )}
+                    <SettingsForm {...data} />
                 </div>
-                {/* <SettingsSkeleton /> */}
+                <div className="flex-1">
+                    <SettingsTable />
+                </div>
             </div>
         </div>
     );

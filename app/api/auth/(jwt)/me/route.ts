@@ -1,7 +1,7 @@
 import { showUnauthorizedError } from '@/app/api/(dashboard)/exchanges/errors';
 import { showStandardCustomResponse } from '@/app/api/(dashboard)/exchanges/responses';
 import { TokenModel } from '@/mongodb/models/tokenModel';
-import { dbConnect, dbDisconnect } from '@/mongodb/mongodb';
+import { dbConnect } from '@/mongodb/mongodb';
 import { JwtPayload, verify } from 'jsonwebtoken';
 import { cookies } from 'next/headers';
 import { NextRequest } from 'next/server';
@@ -23,7 +23,7 @@ export async function GET(request: NextRequest) {
         if (!id || id.length !== 24 || !exists) {
             return showUnauthorizedError();
         }
-        await dbDisconnect();
+
         return showStandardCustomResponse('Auth success!');
     } catch (error) {
         return showUnauthorizedError();
