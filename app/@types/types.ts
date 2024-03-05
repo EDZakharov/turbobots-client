@@ -49,16 +49,32 @@ export interface ICustomInput {
 }
 
 export interface IBuyOrdersStepsToGrid {
-    [key: string]: {
-        step: number;
-        orderDeviation: number;
-        orderSecondaryPairVolume: number;
-        orderBasePairVolume: number;
-        orderPriceToStep: number;
-        orderAveragePrice: number;
-        orderTargetPrice: number;
-        orderTargetDeviation: number;
-        summarizedOrderSecondaryPairVolume: number;
-        summarizedOrderBasePairVolume: number;
-    };
+    step: number;
+    orderDeviation: number;
+    orderSecondaryPairVolume: number;
+    orderBasePairVolume: number;
+    orderPriceToStep: number;
+    orderAveragePrice: number;
+    orderTargetPrice: number;
+    orderTargetDeviation: number;
+    summarizedOrderSecondaryPairVolume: number;
+    summarizedOrderBasePairVolume: number;
+}
+export interface ITableData {
+    strategy: [
+        {
+            step: number;
+            orderDeviation: number;
+            orderSecondaryPairVolume: number;
+            orderBasePairVolume: number;
+            orderPriceToStep: number;
+            orderAveragePrice: number;
+            orderTargetPrice: number;
+            orderTargetDeviation: number;
+            summarizedOrderSecondaryPairVolume: number;
+            summarizedOrderBasePairVolume: number;
+        }
+    ];
+    message: string;
+    status: boolean;
 }

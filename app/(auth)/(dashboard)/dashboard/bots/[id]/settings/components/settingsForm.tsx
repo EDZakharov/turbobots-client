@@ -141,7 +141,7 @@ function LoginButton() {
     const { pending } = useFormStatus();
     return (
         <button
-            className="w-[200px] my-10 border dark:border-gray-700 border-gray-300 p-2 rounded-md dark:hover:bg-white/5 hover:bg-secondary-color/5 flex flex-col items-center disabled:cursor-not-allowed"
+            className="w-[200px] my-8 border dark:border-gray-700 border-gray-300 p-2 rounded-md dark:hover:bg-white/5 hover:bg-secondary-color/5 flex flex-col items-center disabled:cursor-not-allowed"
             disabled={pending}
         >
             {pending ? (

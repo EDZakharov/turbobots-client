@@ -46,6 +46,7 @@ const config: Config = {
                 // Simple 16 row grid
                 '16': 'repeat(16, minmax(0, 1fr))',
                 custom: 'repeat(4, minmax(0, 100px))',
+                '2-custom': '60px minmax(auto, 500px)',
 
                 // Complex site-specific row configuration
                 layout: '',

@@ -229,6 +229,7 @@ export async function getFormSettingsDefaultData(
                 cache: 'no-store',
             }
         );
+
         revalidatePath(`/dashboard/bots/${botId}/settings`);
 
         return response.json();
@@ -236,6 +237,30 @@ export async function getFormSettingsDefaultData(
         // revalidatePath(`/dashboard/bots/${botId}/settings`);
         console.log(error.message);
 
+        return error.message;
+    }
+}
+
+export async function getStrategyTableData(botId: string) {
+    try {
+        if (!botId) {
+            throw new Error('Missing data');
+        }
+
+        const response = await fetch(
+            `http://localhost:7000/api/generate-strategy`,
+            {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                cache: 'no-store',
+            }
+        );
+        revalidatePath(`/dashboard/bots/${botId}/settings`);
+        return response.json();
+    } catch (error: any) {
+        console.log(error.message);
         return error.message;
     }
 }

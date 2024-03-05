@@ -6,5 +6,11 @@ export default async function SettingsLayout({
 }: Readonly<{
     children: React.ReactNode;
 }>) {
+    // return <Suspense fallback={<SettingsSkeleton />}>{children}</Suspense>;
     return <Suspense fallback={<SettingsSkeleton />}>{children}</Suspense>;
+    // return (
+    //     <Suspense fallback={<SettingsSkeleton />}>
+    //         <SettingsSkeleton />
+    //     </Suspense>
+    // );
 }
