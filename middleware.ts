@@ -1,11 +1,11 @@
 import { jwtVerify } from 'jose';
 import { cookies } from 'next/headers';
 import { NextResponse, type NextRequest } from 'next/server';
+import { parseCookie } from './app/lib/utils/parseCookies';
 import {
     accessTokenRegExp,
     refreshTokenRegExp,
-} from './app/lib/regExp/tokensRegexp';
-import { parseCookie } from './app/lib/utils/parseCookies';
+} from './app/lib/utils/regExp/tokensRegexp';
 
 const maxRetries = 2;
 let currentRetry = 0;
@@ -34,13 +34,19 @@ export async function middleware(request: NextRequest) {
         console.log('@api');
         return NextResponse.next();
     }
-    const currentPath = request.nextUrl.pathname;
 
-    // console.log(currentPath);
+    const currentPath = request.nextUrl.pathname;
 
     const cookieList = cookies();
     const accessToken = cookieList.get('accessToken')?.value;
     const refreshToken = cookieList.get('refreshToken')?.value;
+
+    if (currentPath.startsWith('/login') && accessToken && refreshToken) {
+        console.log(currentPath);
+
+        return NextResponse.redirect(new URL('/dashboard', request.url));
+    }
+
     if (
         !currentPath.includes('/login') &&
         !currentPath.includes('/register') &&
@@ -119,7 +125,7 @@ export async function middleware(request: NextRequest) {
                 return response;
             } catch (error) {
                 console.log(error);
-
+                currentRetry = 0;
                 return NextResponse.redirect(new URL('/login', request.url));
             }
         }

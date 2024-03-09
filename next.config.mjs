@@ -4,6 +4,10 @@
  * @type {import('next').NextConfig}
  */
 const nextConfig = {
+    // async middleware() {
+    //     const { middleware } = require('./middleware');
+    //     return [middleware];
+    // },
     // reactStrictMode: false,
     // async headers() {
     //     return [
