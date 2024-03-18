@@ -1,4 +1,4 @@
-import Button from '@/app/ui/components/basic/button';
+import LinkButton from '@/app/ui/components/basic/linkButton';
 
 export default function SideBar() {
     const menu = [
@@ -20,9 +20,8 @@ export default function SideBar() {
                             {menu.map((el) => (
                                 <li
                                     key={el.id}
-                                    className=" hover:bg-gray-200 dark:hover:bg-white/15 hover:text-black  dark:hover:text-white transition-all rounded-r-xl px-7 text-sm "
-                                >
-                                    <Button
+                                    className=" hover:bg-gray-200 dark:hover:bg-white/15 hover:text-black  dark:hover:text-white transition-all rounded-r-xl px-7 text-sm ">
+                                    <LinkButton
                                         href={el.link}
                                         svgColor={'text-white'}
                                         tittle={el.tittle}

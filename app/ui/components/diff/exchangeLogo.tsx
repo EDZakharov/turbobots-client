@@ -6,25 +6,26 @@ import {
 } from '../svg-components/svg-components';
 
 interface IExchange {
-    name: string;
-    className?: string;
+    name?: string;
+    size?: string;
+    width?: string;
+    height?: string;
     linkStyle?: string;
 }
 
-export default function Exchange({ name, className, linkStyle }: IExchange) {
+export default function ExchangeLogo({
+    name,
+    size,
+    linkStyle,
+    width,
+    height,
+}: IExchange) {
     exchanges;
 
     if (name === 'bybit') {
         return (
-            <div className="size-min">
-                <a
-                    href={exchanges[name]}
-                    className={linkStyle}
-                    target="_blank
-"
-                >
-                    <BybitSvg className={className} />
-                </a>
+            <div className="w-min h-min">
+                <BybitSvg width={width} height={height} />
             </div>
         );
     }
@@ -33,7 +34,7 @@ export default function Exchange({ name, className, linkStyle }: IExchange) {
         return (
             <div className="size-min">
                 <a href={exchanges[name]} className={linkStyle} target="_blank">
-                    <BinanceSvg className={className} />
+                    <BinanceSvg size={size} />
                 </a>
             </div>
         );
@@ -42,7 +43,7 @@ export default function Exchange({ name, className, linkStyle }: IExchange) {
     return (
         <div className="size-min">
             <a href={'#'} className={linkStyle} target="_blank">
-                <QuestionSvg className={className} />
+                <QuestionSvg size={size} />
             </a>
         </div>
     );

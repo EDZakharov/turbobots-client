@@ -10,8 +10,9 @@ import {
     generateTokens,
     saveRefreshToken,
 } from '@/app/lib/mongodb/tokens/tokens';
+import { decryptPayload } from '@/app/lib/utils/forge';
+import { jwtVerify } from 'jose';
 
-import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function PUT(request: NextRequest) {
@@ -35,7 +36,7 @@ export async function PUT(request: NextRequest) {
             );
         }
 
-        const cookie = cookies();
+        // const cookie = cookies();
 
         const refreshToken = request.headers
             .get('Set-Cookie')
@@ -54,14 +55,22 @@ export async function PUT(request: NextRequest) {
         if (!user) {
             return showUnauthorizedError();
         }
+        const forgePrivate = process.env.FORGE_PRIVATE || '';
 
-        const newUser = await User.findById(user.userId);
+        const { payload }: { payload: any } = await jwtVerify(
+            user.refreshToken,
+            new TextEncoder().encode(checkAccessSecret)
+        );
+
+        const decryptedPayload = decryptPayload(payload.payload, forgePrivate);
+
+        const newUser = await User.findById(decryptedPayload.id);
         // const secureUserAgent = userAgent(request)
 
         const userDto = new UserDTO(newUser);
-        const payload = { ...userDto };
+        const newPayload = { ...userDto };
         const tokens = generateTokens(
-            { ...payload },
+            { ...newPayload },
             checkAccessSecret,
             checkRefreshSecret
         );
@@ -96,7 +105,7 @@ export async function PUT(request: NextRequest) {
 
         return response;
     } catch (error) {
-        // console.log(error);
+        console.log(error);
 
         return NextResponse.json(
             {

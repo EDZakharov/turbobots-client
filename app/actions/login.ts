@@ -3,6 +3,7 @@
 import bcrypt from 'bcrypt';
 import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 import { User } from '../lib/mongodb/models/usermodel';
 import { dbConnect } from '../lib/mongodb/mongodb';
 import { UserDTO } from '../lib/mongodb/serialize/SerializeUser';
@@ -29,13 +30,17 @@ export async function formLogin(
         }
 
         const passwordIsMatch = await bcrypt.compare(password, user.password);
+
         if (!passwordIsMatch) {
             throw new Error('Incorrect password');
         }
+
         const userDto = new UserDTO(user);
+
         const payload = { ...userDto };
         const tokens = generateTokens(
             { ...payload },
+
             process.env.APP_DB_SECRET_ACCESS_TOKEN as string,
             process.env.APP_DB_SECRET_REFRESH_TOKEN as string
         );
@@ -66,15 +71,12 @@ export async function formLogin(
             sameSite: 'strict',
             maxAge: 30 * day,
         });
-
-        if (result) {
-        }
-        return;
     } catch (error: any) {
         console.log(error);
 
         return error.message;
     } finally {
         revalidatePath('/login');
+        redirect('/dashboard');
     }
 }

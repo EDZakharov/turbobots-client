@@ -6,9 +6,9 @@ export const SettingsSkeleton = () => {
                 <div className="flex-initial">
                     <StrategyOptionsSkeleton />
                 </div>
-                <div className="flex-1">
+                {/* <div className="flex-1">
                     <StrategyTableSkeleton />
-                </div>
+                </div> */}
             </div>
         </div>
     );
@@ -16,7 +16,7 @@ export const SettingsSkeleton = () => {
 
 function ButtonSkeleton() {
     return (
-        <div className="w-[200px] my-10 border border-gray-300/0 p-2 rounded-md dark:bg-white/10 bg-gray-800/10 animate-pulse text-white/0 text-center">
+        <div className="w-[200px] my-8  border border-gray-300/0 p-2 rounded-md dark:bg-white/10 bg-gray-800/10 animate-pulse text-white/0 text-center">
             Loading...
         </div>
     );
@@ -25,10 +25,10 @@ function ButtonSkeleton() {
 function InputSkeleton() {
     return (
         <>
-            <span className="block text-gray-400/0 text-sm overflow-hidden">
+            <span className="block text-gray-400/0 text-[12px] overflow-hidden">
                 Loading...
             </span>
-            <div className="relative w-auto h-auto">
+            <div className="relative w-auto h-max">
                 <input
                     type="text"
                     disabled
@@ -47,49 +47,51 @@ function InputSkeleton() {
     );
 }
 
-function StrategyOptionsSkeleton() {
+export function StrategyOptionsSkeleton() {
     const inputsWrapperCln = 'w-full ';
     return (
-        <div className="h-full dark:bg-secondary-color rounded-lg shadow-main m-1 flex flex-col items-center">
-            <div className="flex flex-col gap-5 p-5">
-                <div className=" flex flex-col gap-5">
-                    <span className="text-md w-[170px] bg-gray-800/10 dark:bg-white/10 animate-pulse text-white/0">
-                        Strategy:
-                    </span>
-                    <div className="flex gap-5">
-                        <div className={inputsWrapperCln}>
-                            <InputSkeleton />
+        <div>
+            <div className="h-max dark:bg-secondary-color rounded-lg shadow-main m-1 flex flex-col items-center">
+                <div className="flex flex-col gap-5 p-5">
+                    <div className=" flex flex-col gap-5">
+                        <span className="w-max text-md  bg-gray-800/10 dark:bg-white/10 animate-pulse text-white/0">
+                            Strategy:
+                        </span>
+                        <div className="flex gap-5">
+                            <div className={inputsWrapperCln}>
+                                <InputSkeleton />
+                            </div>
+                            <div className={inputsWrapperCln}>
+                                <InputSkeleton />
+                            </div>
                         </div>
-                        <div className={inputsWrapperCln}>
-                            <InputSkeleton />
+                    </div>
+                    <div className="flex flex-col gap-5">
+                        <span className=" w-max text-md bg-gray-800/10 dark:bg-white/10 animate-pulse text-white/0">
+                            Insurance orders:
+                        </span>
+                        <div className="grid grid-cols-2-custom relative gap-5">
+                            <div className={inputsWrapperCln}>
+                                <InputSkeleton />
+                            </div>
+                            <div className={inputsWrapperCln}>
+                                <InputSkeleton />
+                            </div>
+                            <div className={inputsWrapperCln}>
+                                <InputSkeleton />
+                            </div>
+                            <div className={inputsWrapperCln}>
+                                <InputSkeleton />
+                            </div>
+                            <div className={inputsWrapperCln}>
+                                <InputSkeleton />
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div className="flex flex-col gap-5 ">
-                    <span className="text-md w-[170px] bg-gray-800/10 dark:bg-white/10 animate-pulse text-white/0">
-                        Insurance orders:
-                    </span>
-                    <div className="grid grid-cols-2-custom relative gap-5">
-                        <div className={inputsWrapperCln}>
-                            <InputSkeleton />
-                        </div>
-                        <div className={inputsWrapperCln}>
-                            <InputSkeleton />
-                        </div>
-                        <div className={inputsWrapperCln}>
-                            <InputSkeleton />
-                        </div>
-                        <div className={inputsWrapperCln}>
-                            <InputSkeleton />
-                        </div>
-                        <div className={inputsWrapperCln}>
-                            <InputSkeleton />
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-            <ButtonSkeleton />
+                <ButtonSkeleton />
+            </div>
         </div>
     );
 }

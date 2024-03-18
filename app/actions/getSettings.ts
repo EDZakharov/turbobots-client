@@ -1,6 +1,9 @@
 'use server';
 
-import { cookies } from 'next/headers';
+import { Bot } from '../lib/mongodb/models/botModel';
+import { BotSettings } from '../lib/mongodb/models/settingsModel';
+import { dbConnect } from '../lib/mongodb/mongodb';
+import SettingsDto from '../lib/srz/serializedSettings';
 
 export async function getFormSettingsDefaultData(
     botId: string
@@ -10,35 +13,25 @@ export async function getFormSettingsDefaultData(
         if (!botId) {
             throw new Error('Missing data');
         }
-        const cookieList = cookies();
-        const accessToken = cookieList.get('accessToken')?.value;
-        const refreshToken = cookieList.get('refreshToken')?.value;
 
-        // const { data } = await instance.get(`bots/${botId}/settings`, {
-        //     headers: {
-        //         'Set-cookie': `accessToken=${accessToken}`,
-        //     },
-        // });
+        await dbConnect();
 
-        const response = await fetch(
-            `http://localhost:3000/api/bots/${botId}/settings`,
-            {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Set-Cookie': `accessToken=${accessToken}; refreshToken=${refreshToken}`,
-                },
-                cache: 'no-store',
-            }
-        );
+        const activeBot = await Bot.findOne({
+            botId,
+        });
 
-        if (response.ok) {
-            return response.json();
-        } else if (response.status === 401) {
-            throw new Error('Unauthorized');
-        } else {
-            throw new Error('Request failed');
+        if (!activeBot) {
+            throw new Error('Bots not found');
         }
+
+        const botSettings = await BotSettings.findOne({
+            botId: activeBot.botId,
+        });
+
+        const serializedSettings = new SettingsDto(botSettings);
+        serializedSettings.botId = botId;
+
+        return serializedSettings;
     } catch (error: any) {
         // console.log(error.message);
 

@@ -2,6 +2,7 @@
 
 import { formLogin } from '@/app/actions/login';
 import { lusitana } from '@/app/ui/fonts/fonts';
+import Link from 'next/link';
 import { useFormState, useFormStatus } from 'react-dom';
 
 export default function LoginForm() {
@@ -19,8 +20,7 @@ export default function LoginForm() {
                     <div>
                         <label
                             className="mb-3 mt-5 block text-xs font-medium text-gray-900"
-                            htmlFor="email"
-                        >
+                            htmlFor="email">
                             Email
                         </label>
                         <div className="relative">
@@ -37,8 +37,7 @@ export default function LoginForm() {
                     <div className="mt-4">
                         <label
                             className="mb-3 mt-5 block text-xs font-medium text-gray-900"
-                            htmlFor="password"
-                        >
+                            htmlFor="password">
                             Password
                         </label>
                         <div className="relative">
@@ -58,8 +57,7 @@ export default function LoginForm() {
                 <div
                     className="flex h-8 items-end space-x-1"
                     aria-live="polite"
-                    aria-atomic="true"
-                >
+                    aria-atomic="true">
                     {errorMessage && (
                         <>
                             <p className="text-sm text-red-500">
@@ -68,6 +66,14 @@ export default function LoginForm() {
                         </>
                     )}
                 </div>
+                <span className="text-sm text-gray-600">
+                    Dont have an Account?{' '}
+                    <Link
+                        href={'/register'}
+                        className="hover:text-gray-500 hover:border-b border-gray-600">
+                        SignUp
+                    </Link>
+                </span>
             </div>
         </form>
     );
@@ -79,8 +85,7 @@ function LoginButton() {
     return (
         <button
             className="mt-4 w-full dark:bg-gray-400"
-            aria-disabled={pending}
-        >
+            aria-disabled={pending}>
             Log in
         </button>
     );

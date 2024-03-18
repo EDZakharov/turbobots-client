@@ -72,7 +72,7 @@ const config: Config = {
     plugins: [
         require('tailwindcss-animated'),
         require('tailwind-scrollbar'),
-        require('tw-elements/dist/plugin.cjs'),
+        require('tw-elements/plugin.cjs'),
         function ({ addUtilities }: any) {
             const newUtilities = {
                 // '.custom-li': {

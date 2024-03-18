@@ -1,42 +1,43 @@
 'use server';
+
+import { jwtVerify } from 'jose';
 import { cookies } from 'next/headers';
+import { DefaultStrategy } from '../lib/mongodb/models/defaultStrategyModel';
+import { decryptPayload } from '../lib/utils/forge';
 
 export async function getStrategyTableData(botId: string) {
     try {
         if (!botId) {
             throw new Error('Missing data');
         }
-        const cookieList = cookies();
-        const accessToken = cookieList.get('accessToken')?.value;
-        const refreshToken = cookieList.get('refreshToken')?.value;
-        const response = await fetch(
-            `http://localhost:7000/api/generate-strategy`,
 
-            {
-                method: 'POST',
-                credentials: 'include',
-                body: JSON.stringify({
-                    botId: '65dbc1a57040846689d9cf10',
-                    coin: 'BTCUSDT',
-                }),
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Set-Cookie': `accessToken=${accessToken}`,
-                },
+        const cookiesList = cookies();
+        const accessToken = cookiesList.get('refreshToken')?.value as string;
 
-                cache: 'no-store',
-            }
+        const checkRefreshSecret =
+            process.env.APP_DB_SECRET_REFRESH_TOKEN || '';
+        const forgePrivate = process.env.FORGE_PRIVATE || '';
+
+        const { payload }: { payload: any } = await jwtVerify(
+            accessToken,
+            new TextEncoder().encode(checkRefreshSecret)
         );
 
-        if (response.ok) {
-            return response.json();
-        } else if (response.status === 401) {
-            throw new Error('Unauthorized');
-        } else {
-            throw new Error('Request failed');
+        const decryptedPayload = decryptPayload(payload.payload, forgePrivate);
+
+        const strategyFromDb = await DefaultStrategy.findOne({
+            userId: decryptedPayload.id,
+            botId,
+            coin: 'BTCUSDT',
+        });
+
+        if (!strategyFromDb) {
+            return [];
         }
+
+        return strategyFromDb.strategy;
     } catch (error: any) {
-        // console.log(error.message);
-        return error.message;
+        console.log(error.message);
+        return [];
     }
 }

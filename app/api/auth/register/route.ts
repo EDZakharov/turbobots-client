@@ -14,8 +14,6 @@ export async function POST(request: NextRequest) {
     try {
         await dbConnect();
 
-        console.log(request.headers.get('user-agent'));
-
         const { name, username, email, password }: IUserCredentials =
             await request.json();
 

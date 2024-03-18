@@ -12,7 +12,7 @@ export default function CustomInput({
     max,
     min,
     step,
-    defaultState,
+    defaultState = '0',
 }: ICustomInput) {
     const [contactInfo, setContactInfo] = useState<string>(defaultState);
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -39,8 +39,7 @@ export default function CustomInput({
         <>
             <label
                 className="block dark:text-gray-400 text-[12px] overflow-hidden"
-                htmlFor={name}
-            >
+                htmlFor={name}>
                 {labelText}
             </label>
             <div className="relative w-auto h-auto">

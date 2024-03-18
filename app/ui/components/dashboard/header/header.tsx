@@ -1,4 +1,4 @@
-import Button from '@/app/ui/components/basic/button';
+import LinkButton from '@/app/ui/components/basic/linkButton';
 import ThemeChanger from '@/app/ui/components/diff/themeChanger';
 import { LogoSvgAnimated } from '../../svg-components/svg-components';
 
@@ -14,13 +14,13 @@ export default async function Header() {
                     </span>
                 </div>
                 <div className="flex items-center gap-2 mr-2 ">
-                    <Button
+                    <LinkButton
                         href="/"
                         tittle="Logout"
                         buttonName="Logout"
                         className="z-10 flex items-center gap-2 text-[10px] px-2 py-[2px] hover:cursor-pointer border rounded-md hover:bg-gray-400/20 dark:hover:bg-white/10 dark:hover:border-sidebar-dark-color dark:hover:shadow-xl transition-all"
                     />
-                    <Button
+                    <LinkButton
                         href="/"
                         tittle="User"
                         buttonName="Logout"

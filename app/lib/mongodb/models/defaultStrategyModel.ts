@@ -6,7 +6,7 @@ const getValidCoins = async () => {
     return coins.map((coin) => coin.symbol);
 };
 
-const StrategySchema = new Schema(
+const DefaultStrategySchema = new Schema(
     {
         userId: {
             type: Schema.Types.ObjectId,
@@ -56,6 +56,9 @@ const StrategySchema = new Schema(
     { timestamps: true }
 );
 
-export type StrategySchema = InferSchemaType<typeof StrategySchema>;
-export const Strategy =
-    models.strategies || model('strategies', StrategySchema);
+export type DefaultStrategySchema = InferSchemaType<
+    typeof DefaultStrategySchema
+>;
+export const DefaultStrategy =
+    models.defaultStrategies ||
+    model('defaultStrategies', DefaultStrategySchema);

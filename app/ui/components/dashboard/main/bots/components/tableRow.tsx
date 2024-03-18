@@ -1,3 +1,4 @@
+/* eslint-disable react/display-name */
 import { IBuyOrdersStepsToGrid } from '@/app/lib/@types/types';
 import { memo } from 'react';
 

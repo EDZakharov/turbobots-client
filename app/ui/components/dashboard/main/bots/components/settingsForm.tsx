@@ -3,17 +3,22 @@
 import { formSettings } from '@/app/actions/setSettings';
 import { IBotConfig } from '@/app/lib/@types/types';
 import { SpinSvg } from '@/app/ui/components/svg-components/svg-components';
+import { useRouter } from 'next/navigation';
 import { useFormState, useFormStatus } from 'react-dom';
 import CustomInput from './customInput';
 
 export default function SettingsForm(data: IBotConfig) {
     const inputsWrapperCln = 'w-full';
     const [errorMessage, dispatch] = useFormState(formSettings, undefined);
+    const router = useRouter();
+    if (!data) {
+        console.log(data);
+        return new Error();
+    }
     return (
         <form
-            className="h-full dark:bg-secondary-color rounded-lg shadow-main m-1 flex flex-col items-center"
-            action={dispatch}
-        >
+            className="h-max dark:bg-secondary-color rounded-lg shadow-main m-1 flex flex-col items-center"
+            action={dispatch}>
             <input
                 className="absolute hidden"
                 placeholder=""
@@ -23,7 +28,7 @@ export default function SettingsForm(data: IBotConfig) {
             />
             <div className="flex flex-col gap-5 p-5">
                 <div className=" flex flex-col gap-5">
-                    <span className="text-md dark:text-gray-400">
+                    <span className="text-md w-max dark:text-gray-400">
                         Strategy:
                     </span>
                     <div className="flex gap-5">
@@ -56,7 +61,7 @@ export default function SettingsForm(data: IBotConfig) {
                     </div>
                 </div>
                 <div className="flex flex-col gap-5 ">
-                    <span className="text-md dark:text-gray-400">
+                    <span className="text-md w-max dark:text-gray-400">
                         Insurance orders:
                     </span>
                     <div className="grid grid-cols-2-custom relative gap-5">
@@ -148,8 +153,7 @@ function LoginButton() {
     return (
         <button
             className="w-[200px] my-8 border dark:border-gray-700 border-gray-300 p-2 rounded-md dark:hover:bg-white/5 hover:bg-secondary-color/5 flex flex-col items-center disabled:cursor-not-allowed"
-            disabled={pending}
-        >
+            disabled={pending}>
             {pending ? (
                 <span className="animate-pulse">
                     <SpinSvg size="24" />
