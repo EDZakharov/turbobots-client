@@ -39,7 +39,8 @@ export default function CustomInput({
         <>
             <label
                 className="block dark:text-gray-400 text-[12px] overflow-hidden"
-                htmlFor={name}>
+                htmlFor={name}
+            >
                 {labelText}
             </label>
             <div className="relative w-auto h-auto">

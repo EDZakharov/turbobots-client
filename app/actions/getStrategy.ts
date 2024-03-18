@@ -12,14 +12,14 @@ export async function getStrategyTableData(botId: string) {
         }
 
         const cookiesList = cookies();
-        const accessToken = cookiesList.get('refreshToken')?.value as string;
+        const refreshToken = cookiesList.get('refreshToken')?.value as string;
 
         const checkRefreshSecret =
             process.env.APP_DB_SECRET_REFRESH_TOKEN || '';
         const forgePrivate = process.env.FORGE_PRIVATE || '';
 
         const { payload }: { payload: any } = await jwtVerify(
-            accessToken,
+            refreshToken,
             new TextEncoder().encode(checkRefreshSecret)
         );
 

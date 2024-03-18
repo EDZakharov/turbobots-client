@@ -2,6 +2,7 @@
 
 import bcrypt from 'bcrypt';
 import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
 import { User } from '../lib/mongodb/models/usermodel';
 import { dbConnect } from '../lib/mongodb/mongodb';
 
@@ -49,11 +50,11 @@ export async function register(
         });
 
         await newUser.save();
+        revalidatePath('/register');
     } catch (error: any) {
         return error.message;
     } finally {
-        revalidatePath('/register');
-        // redirect(`/register`);
+        redirect(`/register`);
     }
 }
 
