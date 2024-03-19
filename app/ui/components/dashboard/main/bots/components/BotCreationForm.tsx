@@ -1,6 +1,7 @@
 'use client';
 
 import { createBot } from '@/app/actions/bots';
+import { Coin } from '@/app/ui/components/basic/coin';
 import { FormSubmitButton } from '@/app/ui/components/basic/formSubmitButton';
 import { useFormState } from 'react-dom';
 
@@ -9,12 +10,12 @@ export default function BotCreationForm({ coins }: { coins: string[] }) {
 
     return (
         <form
-            className="h-max  m-1 flex flex-col items-center"
+            className="h-max w-full flex flex-col items-center "
             action={dispatch}
         >
-            <div className="flex flex-col p-5">
-                <div className=" flex flex-col gap-5 ">
-                    <div className="w-full grid grid-cols-2 gap-x-5">
+            <div className="flex flex-col ">
+                <div className="flex flex-col gap-5 w-full ">
+                    <div className="flex flex-wrap gap-y-2 gap-x-4 ">
                         {coins &&
                             coins.map((symbol) => (
                                 <FormInput
@@ -23,6 +24,7 @@ export default function BotCreationForm({ coins }: { coins: string[] }) {
                                     id={symbol}
                                     value={symbol}
                                     name={symbol}
+                                    className=" transition-all cursor-pointer"
                                 />
                             ))}
                     </div>
@@ -32,6 +34,8 @@ export default function BotCreationForm({ coins }: { coins: string[] }) {
                         id="1"
                         name="botName"
                         placeholder="Enter bot name"
+                        minLength={3}
+                        maxLength={12}
                     />
                 </div>
             </div>
@@ -59,8 +63,9 @@ function FormInput({
     className?: string;
 }) {
     return (
-        <div className="flex gap-5 justify-between">
-            <label htmlFor={name}>{value}</label>
+        <div className="min-w-24 flex gap-2 justify-between items-center">
+            <Coin coinName={name} size="17px" />
+            <span className="text-[8px] text-wrap break-words">{value}</span>
             <input
                 type={type}
                 id={id}

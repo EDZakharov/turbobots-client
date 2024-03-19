@@ -66,9 +66,9 @@ export async function createBot(
                 expirationTime: subscription.expirationTime,
                 coins: coinsArr,
             });
-            console.log(bot);
+
             await bot.save();
-            await updateBotStatus(decryptedPayload.id, false);
+            await updateBotCreationStatus(false);
             revalidatePath('/dashboard/bots');
         } else {
             return null;
@@ -80,30 +80,78 @@ export async function createBot(
     }
 }
 
+async function updateBotCreationStatus(isFrozen: boolean, freezeTime = null) {
+    try {
+        const cookiesList = cookies();
+        const accessToken = cookiesList.get('accessToken')?.value as string;
+        const checkAccessSecret = process.env.APP_DB_SECRET_ACCESS_TOKEN || '';
+        const forgePrivate = process.env.FORGE_PRIVATE || '';
+
+        const { payload }: { payload: any } = await jwtVerify(
+            accessToken,
+            new TextEncoder().encode(checkAccessSecret)
+        );
+
+        const decryptedPayload = decryptPayload(payload.payload, forgePrivate);
+
+        await dbConnect();
+        const bot = await Bots.findOne({ userId: decryptedPayload.id });
+        if (bot) {
+            bot.isFrozen = isFrozen;
+            if (freezeTime !== null) {
+                bot.freezeTime = freezeTime;
+            }
+
+            await bot.save();
+            revalidatePath('/dashboard/bots');
+        }
+    } catch (error: any) {
+        return error.message;
+    }
+}
 export async function updateBotStatus(
-    userId: string,
+    botId: string,
     isFrozen: boolean,
     freezeTime = null
 ) {
     try {
+        const cookiesList = cookies();
+        const accessToken = cookiesList.get('accessToken')?.value as string;
+        const checkAccessSecret = process.env.APP_DB_SECRET_ACCESS_TOKEN || '';
+        const forgePrivate = process.env.FORGE_PRIVATE || '';
+
+        const { payload }: { payload: any } = await jwtVerify(
+            accessToken,
+            new TextEncoder().encode(checkAccessSecret)
+        );
+
+        const decryptedPayload = decryptPayload(payload.payload, forgePrivate);
+
         await dbConnect();
-        const bot = await Bots.findOne({ userId });
+        const bot = await Bots.findOne({
+            _id: botId,
+            userId: decryptedPayload.id,
+        });
         if (bot) {
             bot.isFrozen = isFrozen;
             if (freezeTime !== null) {
                 bot.freezeTime = freezeTime;
             }
             await bot.save();
-            console.log(
-                `Bot for user ${userId} is now ${
-                    isFrozen ? 'frozen' : 'active'
-                }.`
-            );
-        } else {
-            console.error(`Bot not found for user ${userId}.`);
+            revalidatePath('/dashboard/bots');
         }
-    } catch (error) {
-        console.error('Error updating bot status:', error);
+    } catch (error: any) {
+        return error.message;
+    }
+}
+
+export async function getBotFrozenStatus(botId: string) {
+    try {
+        await dbConnect();
+        const bot = await Bots.findOne({ _id: botId });
+        return bot.isFrozen;
+    } catch (error: any) {
+        return error.message;
     }
 }
 
@@ -126,8 +174,8 @@ export async function updateBotDeletionAndFreezeTime(
         } else {
             console.error(`Bot not found for user ${userId}.`);
         }
-    } catch (error) {
-        console.error('Error updating bot deletion and freeze time:', error);
+    } catch (error: any) {
+        return error.message;
     }
 }
 
@@ -157,6 +205,31 @@ export async function getActiveBotsByUserId() {
         });
 
         return activeBots;
+    } catch (error: any) {
+        return error.message;
+    }
+}
+
+export async function deleteBotByUserIdAndBotId(botId: string) {
+    try {
+        const cookiesList = cookies();
+        const accessToken = cookiesList.get('accessToken')?.value as string;
+        const checkAccessSecret = process.env.APP_DB_SECRET_ACCESS_TOKEN || '';
+        const forgePrivate = process.env.FORGE_PRIVATE || '';
+
+        const { payload }: { payload: any } = await jwtVerify(
+            accessToken,
+            new TextEncoder().encode(checkAccessSecret)
+        );
+
+        const decryptedPayload = decryptPayload(payload.payload, forgePrivate);
+
+        const result = await Bots.deleteOne({
+            userId: decryptedPayload.id,
+            _id: botId,
+        });
+        revalidatePath('/dashboard/bots');
+        return result;
     } catch (error: any) {
         return error.message;
     }
