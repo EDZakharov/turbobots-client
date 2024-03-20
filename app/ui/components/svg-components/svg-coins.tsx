@@ -207,7 +207,7 @@ export function TrustWalletTokenSvg({ size = DEFAULT_SIZES, className = '' }) {
                 height={size}
                 className={className}
             >
-                <g id="SVGRepo_bgCarrier" stroke-width="0">
+                <g id="SVGRepo_bgCarrier" strokeWidth="0">
                     <rect
                         x="-19.2"
                         y="-19.2"

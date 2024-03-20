@@ -12,7 +12,7 @@ export default function SettingsForm(data: IBotConfig) {
 
     return (
         <form
-            className="h-max dark:bg-secondary-color rounded-lg shadow-main m-1 flex flex-col items-center"
+            className="dark:bg-secondary-color rounded-lg shadow-main m-1 flex flex-col items-center"
             action={dispatch}
         >
             <input

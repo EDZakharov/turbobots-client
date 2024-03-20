@@ -1,21 +1,22 @@
 import { getActiveBotsByUserId } from '@/app/actions/bots';
-import { getAvailableCoins } from '@/app/actions/getAvailableCoins';
 import Link from 'next/link';
 import { Coin } from '../../../basic/coin';
 import { EditSvg } from '../../../svg-components/svg-components';
-import BotCreationForm from './components/BotCreationForm';
 import { PlayStopBotBtn } from './components/PlayStopBtn';
+import AddBot from './components/addbot';
 import { DeleteBotBtn } from './components/deleteBots';
 
 export default async function Bots() {
-    const coins = await getAvailableCoins();
     const activeBots = await getActiveBotsByUserId();
 
     // console.log(activeBots);
     return (
         <div className="p-5 pb-8">
             <div className="flex flex-col gap-5 ">
-                <span>Active bots:</span>
+                <div className="flex items-center justify-between">
+                    <span>Active bots:</span>
+                    <AddBot />
+                </div>
 
                 {activeBots &&
                     activeBots.map(async (bot: any) => {
@@ -63,8 +64,6 @@ export default async function Bots() {
                             </div>
                         );
                     })}
-
-                <BotCreationForm coins={coins} />
             </div>
         </div>
     );

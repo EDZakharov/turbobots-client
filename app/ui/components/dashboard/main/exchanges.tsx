@@ -2,11 +2,7 @@ import { getExchangesInfo } from '@/app/actions/getExchanges';
 import Exchange from './exchange';
 
 export default async function Exchanges() {
-    const availableExchange = [
-        { longName: 'bybit', isPublicApi: true },
-        { longName: 'bybit', isPublicApi: true },
-        { longName: 'bybit', isPublicApi: true },
-    ];
+    const availableExchange = [{ longName: 'bybit', isPublicApi: true }];
     const exchangesData = await getExchangesInfo({
         exchanges: availableExchange,
     });

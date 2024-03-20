@@ -13,6 +13,7 @@ export default function CustomInput({
     min,
     step,
     defaultState = '0',
+    targetRange = true,
 }: ICustomInput) {
     const [contactInfo, setContactInfo] = useState<string>(defaultState);
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -46,27 +47,31 @@ export default function CustomInput({
             <div className="relative w-auto h-auto">
                 <input
                     type="text"
-                    className="z-10 w-full rounded-lg border dark:border-gray-700 border-gray-300 bg-transparent placeholder:text-end p-2 dark:hover:bg-white/5 hover:bg-secondary-color/5 focus:outline-none"
+                    className="z-10 w-full rounded-lg border dark:border-gray-700 border-gray-300 bg-transparent placeholder:text-end p-2 dark:hover:bg-white/5 text-[12px] hover:bg-secondary-color/5 focus:outline-none"
                     value={contactInfo}
                     min={min}
                     step={step}
                     max={max}
                     onChange={handleInputChange}
-                />
-                <input
-                    id={id}
-                    type="range"
-                    name={name}
                     required={required}
-                    className="w-full bg-transparent cursor-pointer appearance-none disabled:opacity-50 disabled:pointer-events-none focus:outline-none
-                    range dark:hover:bg-white/5 hover:bg-secondary-color/5 rounded-xl"
-                    value={contactInfo}
-                    min={min}
-                    max={max}
-                    step={step}
-                    onChange={handleInputChange}
                 />
-                <span className="z-0 absolute overflow-hidden right-2 top-3 dark:text-gray-500 text-gray-800 text-sm">
+
+                {targetRange && (
+                    <input
+                        id={id}
+                        type="range"
+                        name={name}
+                        required={required}
+                        className="w-full bg-transparent cursor-pointer appearance-none disabled:opacity-50 disabled:pointer-events-none focus:outline-none
+                    range dark:hover:bg-white/5 hover:bg-secondary-color/5 rounded-xl"
+                        value={contactInfo}
+                        min={min}
+                        max={max}
+                        step={step}
+                        onChange={handleInputChange}
+                    />
+                )}
+                <span className="z-0 absolute overflow-hidden right-2 top-2 dark:text-gray-500 text-gray-800 text-sm">
                     {placeholder}
                 </span>
             </div>
