@@ -1,10 +1,7 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: {
-        template: '%s | LAVA TRADE',
-        default: 'Bots',
-    },
+    title: 'Create bot',
 };
 
 export default function layout({ children }: { children: React.ReactNode }) {

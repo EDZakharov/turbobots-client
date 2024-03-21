@@ -2,6 +2,7 @@
 import { jwtVerify } from 'jose';
 import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 import { Bots } from '../lib/mongodb/models/botModel';
 import { Coin } from '../lib/mongodb/models/coinsModel';
 import { Subscription } from '../lib/mongodb/models/subscriptionModel';
@@ -77,6 +78,8 @@ export async function createBot(
         console.log(error.message);
 
         return error.message;
+    } finally {
+        redirect('/dashboard/bots');
     }
 }
 

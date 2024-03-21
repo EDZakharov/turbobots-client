@@ -17,7 +17,7 @@ export function FormSubmitButton({ isValidForm }: { isValidForm: boolean }) {
                     <SpinSvg size="24" />
                 </span>
             ) : (
-                <span className="">Save</span>
+                <span className="dark:text-gray-300">Save</span>
             )}
         </button>
     );

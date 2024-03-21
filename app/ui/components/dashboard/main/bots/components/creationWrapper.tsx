@@ -2,7 +2,6 @@ import { getAvailableCoins } from '@/app/actions/getAvailableCoins';
 import { DoubleArrowsSvg } from '@/app/ui/components/svg-components/svg-components';
 import Link from 'next/link';
 import BotCreationForm from './BotCreationForm';
-import Table from './table';
 
 export default async function BotCreationWrapper() {
     const coins = await getAvailableCoins();
@@ -19,15 +18,8 @@ export default async function BotCreationWrapper() {
                 <span>Bots</span>
             </Link>
             <div className="grid grid-cols-3 gap-2 mx-2">
-                <div className="col-span-1  shadow-main dark:bg-secondary-color rounded-lg">
+                <div className="col-span-3  shadow-main dark:bg-secondary-color rounded-lg">
                     <BotCreationForm coins={coins} />
-                </div>
-                <div className="col-span-2 shadow-main dark:bg-secondary-color rounded-lg">
-                    <Table
-                        params={{
-                            id: '',
-                        }}
-                    />
                 </div>
             </div>
         </div>

@@ -1,4 +1,4 @@
-import { RestClientV5 } from 'bybit-api'
+import { RestClientV5 } from 'bybit-api';
 
 export interface IRestClientOptions {
     key?: string;
@@ -51,11 +51,7 @@ export function connectToBybit(
     }
 }
 
-export function connectToExchange({
-    longName,
-
-    isPublicApi,
-}: IConnectExchange) {
+export function connectToExchange({ longName, isPublicApi }: IConnectExchange) {
     switch (longName) {
         case 'bybit': {
             const key = process.env.BYBIT_KEY || '';
