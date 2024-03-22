@@ -54,8 +54,11 @@ export async function createBot(
             new TextEncoder().encode(checkAccessSecret)
         );
 
-        const decryptedPayload = decryptPayload(payload.payload, forgePrivate);
-
+        const decryptedPayload = await decryptPayload(payload.payload);
+        // await createSubscription(
+        //     decryptedPayload.id,
+        //     new Date('2024-03-31T12:00:00')
+        // );
         const subscription = await Subscription.findOne({
             userId: decryptedPayload.id,
         });
@@ -95,7 +98,7 @@ async function updateBotCreationStatus(isFrozen: boolean, freezeTime = null) {
             new TextEncoder().encode(checkAccessSecret)
         );
 
-        const decryptedPayload = decryptPayload(payload.payload, forgePrivate);
+        const decryptedPayload = await decryptPayload(payload.payload);
 
         await dbConnect();
         const bot = await Bots.findOne({ userId: decryptedPayload.id });
@@ -128,7 +131,7 @@ export async function updateBotStatus(
             new TextEncoder().encode(checkAccessSecret)
         );
 
-        const decryptedPayload = decryptPayload(payload.payload, forgePrivate);
+        const decryptedPayload = await decryptPayload(payload.payload);
 
         await dbConnect();
         const bot = await Bots.findOne({
@@ -195,7 +198,7 @@ export async function getActiveBotsByUserId() {
             new TextEncoder().encode(checkAccessSecret)
         );
 
-        const decryptedPayload = decryptPayload(payload.payload, forgePrivate);
+        const decryptedPayload = await decryptPayload(payload.payload);
 
         // console.log(await Bot.find());
         // console.log(decryptedPayload.id);
@@ -207,9 +210,11 @@ export async function getActiveBotsByUserId() {
             // deletionTime: null,
         });
 
+        console.log(activeBots);
+
         return activeBots;
     } catch (error: any) {
-        return error.message;
+        return [];
     }
 }
 
@@ -225,7 +230,7 @@ export async function deleteBotByUserIdAndBotId(botId: string) {
             new TextEncoder().encode(checkAccessSecret)
         );
 
-        const decryptedPayload = decryptPayload(payload.payload, forgePrivate);
+        const decryptedPayload = await decryptPayload(payload.payload);
 
         const result = await Bots.deleteOne({
             userId: decryptedPayload.id,

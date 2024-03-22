@@ -50,7 +50,7 @@ export async function formSettings(
             new TextEncoder().encode(checkRefreshSecret)
         );
 
-        const decryptedPayload = decryptPayload(payload.payload, forgePrivate);
+        const decryptedPayload = await decryptPayload(payload.payload);
 
         if (!decryptedPayload.id) {
             throw new Error('Bad user id');

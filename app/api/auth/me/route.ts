@@ -6,7 +6,7 @@
 //     const cookiesList = cookies();
 //     const accessToken = cookiesList.get('accessToken')?.value as string;
 
-//     if (!accessToken) {
+//     if (!accessToken) {x
 //         return showUnauthorizedError();
 //     }
 

@@ -38,7 +38,7 @@ export async function formLogin(
         const userDto = new UserDTO(user);
 
         const payload = { ...userDto };
-        const tokens = generateTokens(
+        const tokens = await generateTokens(
             { ...payload },
 
             process.env.APP_DB_SECRET_ACCESS_TOKEN as string,

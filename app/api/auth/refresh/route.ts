@@ -62,14 +62,14 @@ export async function PUT(request: NextRequest) {
             new TextEncoder().encode(checkAccessSecret)
         );
 
-        const decryptedPayload = decryptPayload(payload.payload, forgePrivate);
+        const decryptedPayload = await decryptPayload(payload.payload);
 
         const newUser = await User.findById(decryptedPayload.id);
         // const secureUserAgent = userAgent(request)
 
         const userDto = new UserDTO(newUser);
         const newPayload = { ...userDto };
-        const tokens = generateTokens(
+        const tokens = await generateTokens(
             { ...newPayload },
             checkAccessSecret,
             checkRefreshSecret

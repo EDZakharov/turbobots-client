@@ -93,9 +93,10 @@ export async function POST(request: NextRequest) {
                 }
             );
         }
+        console.log(passwordIsMatch);
         const userDto = new UserDTO(user);
         const payload = { ...userDto };
-        const tokens = generateTokens(
+        const tokens = await generateTokens(
             { ...payload },
             checkAccessSecret,
             checkRefreshSecret

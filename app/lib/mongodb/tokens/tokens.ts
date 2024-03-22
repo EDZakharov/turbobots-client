@@ -8,14 +8,14 @@ interface IGenTokens {
     refreshToken: string;
 }
 
-export function generateTokens(
+export async function generateTokens(
     payload: any,
     accessSecret: string,
     refreshSecret: string
-): IGenTokens {
+): Promise<IGenTokens> {
     const forgePublic = process.env.FORGE_PUBLIC || '';
 
-    const encryptedPayload = encryptPayload(payload, forgePublic);
+    const encryptedPayload = await encryptPayload(payload);
 
     const accessToken = jwt.sign({ payload: encryptedPayload }, accessSecret, {
         expiresIn: '5m',
@@ -35,15 +35,19 @@ export function generateTokens(
 }
 
 export async function saveRefreshToken(userId: ObjectId, refreshToken: string) {
-    await dbConnect();
-    const tokenData = await TokenModel.findOne({ userId });
+    try {
+        await dbConnect();
+        const tokenData = await TokenModel.findOne({ userId });
 
-    if (tokenData) {
-        tokenData.refreshToken = refreshToken;
-        return tokenData.save();
+        if (tokenData) {
+            tokenData.refreshToken = refreshToken;
+            return tokenData.save();
+        }
+        const token = await TokenModel.create({ userId, refreshToken });
+        return token;
+    } catch (error) {
+        return;
     }
-    const token = await TokenModel.create({ userId, refreshToken });
-    return token;
 }
 
 // export async function removeRefreshToken(refreshToken: string) {

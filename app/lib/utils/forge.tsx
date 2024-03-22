@@ -1,35 +1,17 @@
-import forge from 'node-forge';
+import CryptoJS from 'crypto-js';
 
-export function encryptPayload(payload: any, publicKey: string): string {
-    const publicKeyObj = forge.pki.publicKeyFromPem(publicKey);
+const key = process.env.PAYLOAD_KEY || '';
 
-    const encryptedPayload = publicKeyObj.encrypt(
+export async function encryptPayload(payload: any): Promise<string> {
+    const encryptedPayload = CryptoJS.AES.encrypt(
         JSON.stringify(payload),
-        'RSA-OAEP',
-        {
-            md: forge.md.sha256.create(),
-        }
-    );
-    return forge.util.encode64(encryptedPayload);
+        key
+    ).toString();
+    return encryptedPayload;
 }
 
-export function decryptPayload(
-    encryptedPayload: string,
-    privateKey: string
-): any {
-    try {
-        const privateKeyObj = forge.pki.privateKeyFromPem(privateKey);
-
-        const decryptedPayload = privateKeyObj.decrypt(
-            forge.util.decode64(encryptedPayload),
-            'RSA-OAEP',
-            {
-                md: forge.md.sha256.create(),
-            }
-        );
-        return JSON.parse(decryptedPayload);
-    } catch (error) {
-        console.log(error);
-        return null;
-    }
+export async function decryptPayload(encryptedPayload: string): Promise<any> {
+    const decryptedBytes = CryptoJS.AES.decrypt(encryptedPayload, key);
+    const decryptedPayload = decryptedBytes.toString(CryptoJS.enc.Utf8);
+    return JSON.parse(decryptedPayload);
 }

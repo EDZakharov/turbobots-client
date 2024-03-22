@@ -6,9 +6,9 @@ export default function SideBar() {
         { id: 1, tittle: 'Dashboard', link: '/dashboard' },
         { id: 2, tittle: 'Bots', link: '/dashboard/bots' },
         { id: 3, tittle: 'Account', link: '/dashboard/account' },
-        { id: 4, tittle: 'Shop', link: '/dashboard/shop' },
-        { id: 5, tittle: 'Logout', link: '/' },
-        { id: 6, tittle: 'Login', link: '/login' },
+        { id: 4, tittle: 'Settings', link: '/dashboard/shop' },
+        { id: 5, tittle: 'FAQ', link: '/' },
+        // { id: 6, tittle: 'Login', link: '/login' },
     ];
 
     return (

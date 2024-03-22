@@ -23,7 +23,7 @@ export async function getStrategyTableData(botId: string) {
             new TextEncoder().encode(checkRefreshSecret)
         );
 
-        const decryptedPayload = decryptPayload(payload.payload, forgePrivate);
+        const decryptedPayload = await decryptPayload(payload.payload);
 
         const strategyFromDb = await DefaultStrategy.findOne({
             userId: decryptedPayload.id,
