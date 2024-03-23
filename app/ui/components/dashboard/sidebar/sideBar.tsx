@@ -6,7 +6,7 @@ export default function SideBar() {
         { id: 1, tittle: 'Dashboard', link: '/dashboard' },
         { id: 2, tittle: 'Bots', link: '/dashboard/bots' },
         { id: 3, tittle: 'Account', link: '/dashboard/account' },
-        { id: 4, tittle: 'Settings', link: '/dashboard/shop' },
+        { id: 4, tittle: 'Billing', link: '/dashboard/billing' },
         { id: 5, tittle: 'FAQ', link: '/' },
         // { id: 6, tittle: 'Login', link: '/login' },
     ];
@@ -20,7 +20,8 @@ export default function SideBar() {
                             {menu.map((el) => (
                                 <li
                                     key={el.id}
-                                    className=" hover:bg-gray-200 dark:hover:bg-white/15 hover:text-black  dark:hover:text-white transition-all rounded-r-xl px-7 text-sm ">
+                                    className=" hover:bg-gray-200 dark:hover:bg-white/15 hover:text-black  dark:hover:text-white transition-all rounded-r-xl px-7 text-sm "
+                                >
                                     <LinkButton
                                         href={el.link}
                                         svgColor={'text-white'}

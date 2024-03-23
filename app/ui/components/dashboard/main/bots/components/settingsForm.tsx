@@ -49,7 +49,7 @@ export default function SettingsForm(data: IBotConfig) {
                                 placeholder="USDT"
                                 required={true}
                                 min={'0'}
-                                step={'0.001'}
+                                step={'1'}
                                 max={'10000'}
                                 defaultState={data.startOrderVolumeUSDT}
                             />
@@ -139,7 +139,7 @@ export default function SettingsForm(data: IBotConfig) {
                     <p className="text-sm text-red-500">{errorMessage}</p>
                 </>
             )}
-            <FormSubmitButton />
+            <FormSubmitButton isValidForm={false} />
         </form>
     );
 }

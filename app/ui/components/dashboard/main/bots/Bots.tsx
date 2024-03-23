@@ -9,7 +9,6 @@ import { DeleteBotBtn } from './components/deleteBots';
 export default async function Bots() {
     const activeBots = await getActiveBotsByUserId();
 
-    // console.log(activeBots);
     return (
         <div className="p-5 pb-8">
             <div className="flex flex-col gap-5 ">

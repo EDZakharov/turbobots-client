@@ -202,7 +202,7 @@ export default function BotCreationForm({ coins }: { coins: string[] }) {
                                         placeholder="USDT"
                                         required={true}
                                         min={'0'}
-                                        step={'0.001'}
+                                        step={'0.1'}
                                         max={'10000'}
                                         defaultState={'0'}
                                     />
@@ -222,7 +222,7 @@ export default function BotCreationForm({ coins }: { coins: string[] }) {
                                         placeholder="USDT"
                                         required={true}
                                         min={'0'}
-                                        step={'0.001'}
+                                        step={'0.1'}
                                         max={'10000'}
                                         defaultState={'0'}
                                     />

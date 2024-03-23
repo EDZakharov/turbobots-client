@@ -31,7 +31,6 @@ interface IRToken {
 
 export async function middleware(request: NextRequest) {
     if (request.url.includes('/auth')) {
-        console.log('@api');
         return NextResponse.next();
     }
 
@@ -57,7 +56,7 @@ export async function middleware(request: NextRequest) {
     }
 
     if (currentPath.startsWith('/dashboard')) {
-        if (!accessToken || !isValidAccessToken(accessToken)) {
+        if (!accessToken || !(await isValidAccessToken(accessToken))) {
             if (!refreshToken) {
                 return NextResponse.redirect(new URL('/login', request.url));
             }
@@ -123,7 +122,6 @@ export async function middleware(request: NextRequest) {
 
                 return response;
             } catch (error) {
-                console.log(error);
                 currentRetry = 0;
                 return NextResponse.redirect(new URL('/login', request.url));
             }

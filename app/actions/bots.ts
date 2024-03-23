@@ -1,13 +1,11 @@
 'use server';
-import { jwtVerify } from 'jose';
 import { revalidatePath } from 'next/cache';
-import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { Bots } from '../lib/mongodb/models/botModel';
 import { Coin } from '../lib/mongodb/models/coinsModel';
 import { Subscription } from '../lib/mongodb/models/subscriptionModel';
 import { dbConnect } from '../lib/mongodb/mongodb';
-import { decryptPayload } from '../lib/utils/forge';
+import { decrypt } from '../lib/utils/decrypt';
 
 async function getValidCoins() {
     try {
@@ -44,17 +42,7 @@ export async function createBot(
             throw new Error('Invalid coins selected');
         }
 
-        const cookiesList = cookies();
-        const accessToken = cookiesList.get('accessToken')?.value as string;
-        const checkAccessSecret = process.env.APP_DB_SECRET_ACCESS_TOKEN || '';
-        const forgePrivate = process.env.FORGE_PRIVATE || '';
-
-        const { payload }: { payload: any } = await jwtVerify(
-            accessToken,
-            new TextEncoder().encode(checkAccessSecret)
-        );
-
-        const decryptedPayload = await decryptPayload(payload.payload);
+        const decryptedPayload = await decrypt();
         // await createSubscription(
         //     decryptedPayload.id,
         //     new Date('2024-03-31T12:00:00')
@@ -88,17 +76,7 @@ export async function createBot(
 
 async function updateBotCreationStatus(isFrozen: boolean, freezeTime = null) {
     try {
-        const cookiesList = cookies();
-        const accessToken = cookiesList.get('accessToken')?.value as string;
-        const checkAccessSecret = process.env.APP_DB_SECRET_ACCESS_TOKEN || '';
-        const forgePrivate = process.env.FORGE_PRIVATE || '';
-
-        const { payload }: { payload: any } = await jwtVerify(
-            accessToken,
-            new TextEncoder().encode(checkAccessSecret)
-        );
-
-        const decryptedPayload = await decryptPayload(payload.payload);
+        const decryptedPayload = await decrypt();
 
         await dbConnect();
         const bot = await Bots.findOne({ userId: decryptedPayload.id });
@@ -121,17 +99,7 @@ export async function updateBotStatus(
     freezeTime = null
 ) {
     try {
-        const cookiesList = cookies();
-        const accessToken = cookiesList.get('accessToken')?.value as string;
-        const checkAccessSecret = process.env.APP_DB_SECRET_ACCESS_TOKEN || '';
-        const forgePrivate = process.env.FORGE_PRIVATE || '';
-
-        const { payload }: { payload: any } = await jwtVerify(
-            accessToken,
-            new TextEncoder().encode(checkAccessSecret)
-        );
-
-        const decryptedPayload = await decryptPayload(payload.payload);
+        const decryptedPayload = await decrypt();
 
         await dbConnect();
         const bot = await Bots.findOne({
@@ -188,20 +156,7 @@ export async function updateBotDeletionAndFreezeTime(
 export async function getActiveBotsByUserId() {
     try {
         await dbConnect();
-        const cookiesList = cookies();
-        const accessToken = cookiesList.get('accessToken')?.value as string;
-        const checkAccessSecret = process.env.APP_DB_SECRET_ACCESS_TOKEN || '';
-        const forgePrivate = process.env.FORGE_PRIVATE || '';
-
-        const { payload }: { payload: any } = await jwtVerify(
-            accessToken,
-            new TextEncoder().encode(checkAccessSecret)
-        );
-
-        const decryptedPayload = await decryptPayload(payload.payload);
-
-        // console.log(await Bot.find());
-        // console.log(decryptedPayload.id);
+        const decryptedPayload = await decrypt();
 
         const activeBots = await Bots.find({
             userId: decryptedPayload.id,
@@ -209,8 +164,6 @@ export async function getActiveBotsByUserId() {
             // expirationTime: { $gt: new Date() },
             // deletionTime: null,
         });
-
-        console.log(activeBots);
 
         return activeBots;
     } catch (error: any) {
@@ -220,17 +173,8 @@ export async function getActiveBotsByUserId() {
 
 export async function deleteBotByUserIdAndBotId(botId: string) {
     try {
-        const cookiesList = cookies();
-        const accessToken = cookiesList.get('accessToken')?.value as string;
-        const checkAccessSecret = process.env.APP_DB_SECRET_ACCESS_TOKEN || '';
-        const forgePrivate = process.env.FORGE_PRIVATE || '';
-
-        const { payload }: { payload: any } = await jwtVerify(
-            accessToken,
-            new TextEncoder().encode(checkAccessSecret)
-        );
-
-        const decryptedPayload = await decryptPayload(payload.payload);
+        await dbConnect();
+        const decryptedPayload = await decrypt();
 
         const result = await Bots.deleteOne({
             userId: decryptedPayload.id,

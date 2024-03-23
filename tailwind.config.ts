@@ -17,6 +17,7 @@ const config: Config = {
                 'primary-color': '#141C23',
                 'secondary-color': '#1D1D1E53',
                 'sidebar-dark-color': '#22262C',
+                'custom-green': '#53C45B',
             },
 
             boxShadow: {
