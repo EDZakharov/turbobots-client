@@ -6,8 +6,6 @@ interface IHeaderButtonProps {
     className?: string;
     tittle: string;
     buttonName?: string;
-    svgColor?: string;
-    textColor?: string;
 }
 
 const defaultStyle =

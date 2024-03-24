@@ -3,7 +3,6 @@ import {
     DashboardSvg,
     ExitSvg,
     HomeSvg,
-    QuestionSvg,
     RobotSvg,
     ShopSvg,
     SpinSvg,
@@ -14,13 +13,19 @@ interface ISvgIconProps {
 }
 
 export function SvgIcon({ name }: ISvgIconProps): JSX.Element {
-    if (name === 'Home') return <HomeSvg />;
-    if (name === 'Bots') return <RobotSvg />;
-    if (name === 'Dashboard') return <DashboardSvg />;
-    if (name === 'Account') return <AccountSvg />;
-    if (name === 'Shop') return <ShopSvg />;
-    if (name === 'Logout') return <ExitSvg />;
-    return <SpinSvg />;
+    const fillColor = 'dark:white black';
 
-    return <QuestionSvg />;
+    if (name === 'Home')
+        return <HomeSvg className="dark:fill-white fill-black" />;
+    if (name === 'Bots')
+        return <RobotSvg className="dark:fill-white fill-black" />;
+    if (name === 'Dashboard')
+        return <DashboardSvg className="dark:fill-white fill-black" />;
+    if (name === 'Account')
+        return <AccountSvg className="dark:fill-white fill-black" />;
+    if (name === 'Shop')
+        return <ShopSvg className="dark:fill-white fill-black" />;
+    if (name === 'Logout')
+        return <ExitSvg className="dark:fill-white fill-black" />;
+    return <SpinSvg className="dark:fill-white fill-black" />;
 }

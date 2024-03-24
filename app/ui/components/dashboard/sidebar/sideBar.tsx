@@ -24,10 +24,8 @@ export default function SideBar() {
                                 >
                                     <LinkButton
                                         href={el.link}
-                                        svgColor={'text-white'}
                                         tittle={el.tittle}
                                         buttonName={el.tittle}
-                                        textColor="white"
                                         className="flex items-center gap-4 h-8"
                                     />
                                 </li>

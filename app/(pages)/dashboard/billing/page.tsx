@@ -7,8 +7,22 @@ import {
 import Link from 'next/link';
 import { ReactNode } from 'react';
 
+interface ICardOffer {
+    id: number;
+    text: string;
+    status: boolean;
+}
+
+interface ICard {
+    id: number;
+    option: string;
+    offers: ICardOffer[];
+    price: string;
+    popular: boolean;
+}
+
 export default function Page() {
-    const cards = [
+    const cards: ICard[] = [
         {
             id: 1,
             option: 'Basic',
@@ -18,7 +32,7 @@ export default function Page() {
                 { id: 3, text: 'Reinvesting trade profit', status: false },
                 { id: 4, text: 'Top settings', status: false },
             ],
-            price: '15 USDT',
+            price: '12 USDT',
             popular: false,
         },
         {
@@ -30,7 +44,7 @@ export default function Page() {
                 { id: 3, text: 'Reinvesting trade profit', status: false },
                 { id: 4, text: 'Top settings', status: false },
             ],
-            price: '29 USDT',
+            price: '17 USDT',
             popular: false,
         },
         {
@@ -72,19 +86,22 @@ export default function Page() {
     ];
 
     return (
-        <div className="mx-20 grid lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 place-items-center gap-5 h-[calc(100vh-50px)]">
-            {cards.map((card) => (
+        <div className=" grid m:grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 place-items-center gap-y-14 gap-x-10 w-full place-content-center py-24 px-6 m:px-6 xl:px-18 lg:px:32 2xl:px-44">
+            {cards.map((card: ICard) => (
                 <BillingCard
                     key={card.id}
                     option={card.option as billingOptions}
                     description={card.offers.map((offer) => (
-                        <div className="flex justify-between" key={offer.id}>
+                        <div
+                            className="flex justify-between items-center"
+                            key={offer.id}
+                        >
                             <span>{offer.text}</span>
                             <span>
                                 {offer.status ? (
-                                    <CheckSvg color="#53C45B" size="19px" />
+                                    <CheckSvg color="#53C45B" size="20px" />
                                 ) : (
-                                    <NotCheckSvg color="#DB4C4C" size="17px" />
+                                    <NotCheckSvg color="#DB4C4C" size="20px" />
                                 )}
                             </span>
                         </div>
@@ -107,13 +124,13 @@ function BillingCard({
 }: {
     option: billingOptions;
     description?: ReactNode;
-    price?: string;
-    popular?: boolean;
+    price: string;
+    popular: boolean;
 }) {
     const splitedOption = option?.split('_').join(' ');
 
     return (
-        <div className="lg:hover:scale-105 transition-all w-full h-[800px] shadow-main rounded-lg dark:bg-secondary-color cursor-pointer grid grid-rows-4 overflow-hidden relative ">
+        <div className="lg:hover:scale-100 xl:hover:scale-[112%] transition-all w-full h-[700px] shadow-studydesk rounded-lg dark:bg-secondary-color cursor-pointer grid grid-rows-4 overflow-hidden relative ">
             <div className="flex flex-col items-center p-14 relative">
                 <div className="flex">
                     <span className="text-2xl uppercase">{splitedOption}</span>
@@ -126,7 +143,7 @@ function BillingCard({
                     </div>
                 )}
             </div>
-            <hr className="absolute top-[140px] w-full dark:border-gray-700 border-gray-300 border-[3px]" />
+            <hr className="absolute top-[120px] w-full dark:border-gray-700 border-gray-300 border-[3px]" />
             <div className="flex flex-col w-3/4 place-self-center gap-3">
                 {description}
             </div>
@@ -134,14 +151,16 @@ function BillingCard({
                 <span className="text-xl">Pricing:</span>
                 <div className="flex gap-1">
                     <span className="text-custom-green">{price}</span>
-                    <span>/ month</span>
+                    <span className="uppercase text-md">/ month</span>
                 </div>
             </div>
             <Link
                 href={`/dashboard/billing/${option.toLowerCase()}/buy`}
-                className="flex border dark:border-gray-400 border-gray-400 p-2 w-3/4 rounded-md dark:hover:bg-white/5 hover:bg-gray-700/5 h-min text-nowrap  place-self-center"
+                replace
+                prefetch={true}
+                className="flex border dark:border-gray-700 border-gray-400 p-2 w-3/4 rounded-md dark:hover:bg-white/5 hover:bg-gray-700/5 h-min text-nowrap  place-self-center"
             >
-                <span className="text-center w-full py-1 text-lg uppercase">
+                <span className="text-center w-full py-1 text-lg uppercase text-wrap">
                     Select subscription
                 </span>
             </Link>

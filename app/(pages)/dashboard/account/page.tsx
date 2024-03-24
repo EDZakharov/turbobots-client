@@ -6,7 +6,11 @@ export default function Page() {
         <div className="">
             <div>Account</div>
             <div>
-                <Link href={'/dashboard/account/subscription'}>
+                <Link
+                    href={'/dashboard/account/subscription'}
+                    replace
+                    prefetch={true}
+                >
                     Subscriptions
                 </Link>
             </div>

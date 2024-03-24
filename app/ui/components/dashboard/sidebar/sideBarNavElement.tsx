@@ -21,7 +21,7 @@ export default function SideBarNavElement({
     nameType = '',
 }: IButtonProps) {
     return (
-        <Link href={href} className={className}>
+        <Link href={href} className={className} replace prefetch={true}>
             <SvgIcon name={nameType} />
             <span className="">{text}</span>
         </Link>

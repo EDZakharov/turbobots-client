@@ -17,8 +17,8 @@ export default async function BotCreationWrapper() {
                 />
                 <span>Bots</span>
             </Link>
-            <div className="grid grid-cols-3 gap-2 mx-2">
-                <div className="col-span-3  shadow-main dark:bg-secondary-color rounded-lg">
+            <div className="grid grid-cols-3 gap-2 mx-5">
+                <div className="col-span-3  shadow-studydesk dark:bg-secondary-color rounded-lg">
                     <BotCreationForm coins={coins} />
                 </div>
             </div>
