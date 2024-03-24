@@ -1,27 +1,45 @@
 'use server';
+import { revalidatePath } from 'next/cache';
 import { Bots } from '../lib/mongodb/models/botModel';
 import { Subscription } from '../lib/mongodb/models/subscriptionModel';
 import { decrypt } from '../lib/utils/decrypt';
-import { updateBotDeletionAndFreezeTime, updateBotStatus } from './bots';
+import {
+    setBotActivity,
+    updateBotDeletionAndFreezeTime,
+    updateBotStatus,
+} from './bots';
 
 export async function createSubscription(
-    subscriptionOption: '30' | '90' | '180' | 'infinite'
+    subscriptionOption: '30s' | '30' | '90' | '180' | 'infinite'
 ) {
     try {
         const decryptedPayload = await decrypt();
+        const today = new Date();
+        const currentDate = new Date(
+            today.getFullYear(),
+            today.getMonth(),
+            today.getDate(),
+            today.getHours(),
+            today.getMinutes(),
+            today.getSeconds()
+        );
         let expirationDate: Date;
 
         switch (subscriptionOption) {
+            case '30s':
+                expirationDate = new Date(currentDate.getTime() + 30000);
+
+                break;
             case '30':
-                expirationDate = new Date();
+                expirationDate = new Date(currentDate);
                 expirationDate.setDate(expirationDate.getDate() + 30);
                 break;
             case '90':
-                expirationDate = new Date();
+                expirationDate = new Date(currentDate);
                 expirationDate.setDate(expirationDate.getDate() + 90);
                 break;
             case '180':
-                expirationDate = new Date();
+                expirationDate = new Date(currentDate);
                 expirationDate.setDate(expirationDate.getDate() + 180);
                 break;
             case 'infinite':
@@ -41,9 +59,11 @@ export async function createSubscription(
             });
             await subscription.save();
             const { userId, expirationTime } = subscription;
+
+            revalidatePath('/dashboard/bots');
             return { userId: userId.toString(), expirationTime };
         } else {
-            const oldSubscription = await Subscription.findOneAndUpdate(
+            const updatedStrategy = await Subscription.findOneAndUpdate(
                 {
                     userId: decryptedPayload.id,
                 },
@@ -55,10 +75,12 @@ export async function createSubscription(
                 decryptedPayload.id,
                 expirationDate
             );
-            const { userId, expirationTime } = oldSubscription;
+            const { userId, expirationTime } = updatedStrategy;
+            revalidatePath('/dashboard/bots');
             return { userId: userId.toString(), expirationTime };
         }
     } catch (error) {
+        revalidatePath('/dashboard/bots');
         console.error('Error creating subscription:', error);
     }
 }
@@ -87,30 +109,57 @@ export async function renewSubscription(
 export async function checkSubscriptionsHealth() {
     try {
         const subscriptions = await Subscription.find();
+        const today = new Date();
+        const currentDate = new Date(
+            today.getFullYear(),
+            today.getMonth(),
+            today.getDate(),
+            today.getHours(),
+            today.getMinutes(),
+            today.getSeconds()
+        );
         for (const subscription of subscriptions) {
-            if (subscription.expirationTime < new Date()) {
+            if (subscription.expirationTime < new Date(currentDate)) {
                 console.log(
                     `Subscription for user ${subscription.userId} has expired.`
                 );
 
-                await updateBotStatus(
-                    subscription.userId,
-                    true,
-                    new Date() as any
+                // Find all bots of the user
+                const userBots = await Bots.find({
+                    userId: subscription.userId,
+                });
+
+                // Filter bots whose freeze time has elapsed
+                const botsToDelete = userBots.filter(
+                    (bot: any) =>
+                        bot.freezeTime &&
+                        bot.freezeTime <= new Date(currentDate.getTime())
                 );
 
-                const bot = await Bots.findOne({ userId: subscription.userId });
-                if (
-                    bot &&
-                    bot.deletionTime <= new Date() &&
-                    bot.freezeTime <=
-                        new Date((new Date() as any) - 30 * 24 * 60 * 60 * 1000)
-                ) {
-                    await Bots.deleteOne({ userId: subscription.userId });
+                // Delete the found bots
+                for (const botToDelete of botsToDelete) {
+                    await Bots.deleteOne({ _id: botToDelete._id });
                     console.log(
-                        `Bot for user ${subscription.userId} has been deleted.`
+                        `Bot ${botToDelete._id} for user ${subscription.userId} has been deleted.`
                     );
                 }
+
+                // Update statuses of remaining bots
+                const promises = userBots
+                    .filter((bot: any) => bot.isFrozen === false)
+                    .map(async (bot: any) => {
+                        await setBotActivity(bot._id, false);
+                        await updateBotStatus(
+                            bot._id,
+                            true,
+                            new Date(
+                                currentDate.getTime() + 60000 * 60 * 24 * 30
+                            )
+                        );
+                    });
+
+                await Promise.all(promises);
+                // revalidatePath('/dashboard/bots');
             }
         }
     } catch (error) {
@@ -140,14 +189,30 @@ export async function checkUserSubscriptionActive(
 export async function getUserSubscription(): Promise<any | null> {
     try {
         const decryptedPayload = await decrypt();
+        // await Subscription.collection.drop();
         const subscription = await Subscription.findOne({
             userId: decryptedPayload.id,
         });
 
         const { userId, expirationTime } = subscription;
+        checkSubscriptionsHealth();
+        revalidatePath('/dashboard/bots');
         return { userId: userId.toString(), expirationTime };
     } catch (error) {
-        console.error('Error fetching user subscription:', error);
+        return null;
+    }
+}
+
+export async function deleteUserSubscription(): Promise<any | null> {
+    try {
+        const decryptedPayload = await decrypt();
+
+        const subscription = await Subscription.findOneAndDelete({
+            userId: decryptedPayload.id,
+        });
+        revalidatePath('/dashboard/bots');
+        return true;
+    } catch (error) {
         return null;
     }
 }

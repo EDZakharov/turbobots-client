@@ -1,14 +1,14 @@
 'use client';
 import {
     createSubscription,
+    deleteUserSubscription,
     getUserSubscription,
 } from '@/app/actions/subscription';
 import { useState } from 'react';
-type subsDates = '30' | '90' | '180' | 'infinite';
+type subsDates = '30s' | '30' | '90' | '180' | 'infinite';
 export default function Page() {
     const [subscriptionOption, setSubscriptionOption] =
-        useState<subsDates>('infinite');
-    const [subscriptionMessage, setSubscriptionMessage] = useState('');
+        useState<subsDates>('30s');
     const [isSubscriptionActive, setIsSubscriptionActive] = useState<
         | {
               userId: string;
@@ -20,11 +20,15 @@ export default function Page() {
     const handleSubscribe = async () => {
         try {
             await createSubscription(subscriptionOption);
-            setSubscriptionMessage('Subscription created successfully');
         } catch (error) {
             console.error('Error creating subscription:', error);
-            setSubscriptionMessage('Error creating subscription');
         }
+    };
+
+    const handleUnsubscribe = async () => {
+        try {
+            await deleteUserSubscription();
+        } catch (error) {}
     };
 
     const handleCheckSubscription = async () => {
@@ -40,7 +44,7 @@ export default function Page() {
         }
     };
 
-    const options = ['30', '90', '180', 'infinite'];
+    const options = ['30s', '30', '90', '180', 'infinite'];
 
     return (
         <div>
@@ -70,6 +74,12 @@ export default function Page() {
                     className="border rounded-md p-2 dark:hover:bg-white/5"
                 >
                     Subscribe
+                </button>
+                <button
+                    onClick={handleUnsubscribe}
+                    className="border rounded-md p-2 dark:hover:bg-white/5"
+                >
+                    Unsubscribe
                 </button>
                 <button
                     onClick={handleCheckSubscription}

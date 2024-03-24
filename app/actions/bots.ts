@@ -60,7 +60,7 @@ export async function createBot(
             });
 
             await bot.save();
-            await updateBotCreationStatus(false);
+            // await updateBotCreationStatus(false);
             revalidatePath('/dashboard/bots');
         } else {
             return null;
@@ -93,10 +93,12 @@ async function updateBotCreationStatus(isFrozen: boolean, freezeTime = null) {
         return error.message;
     }
 }
+
+type freeze = null | Date;
 export async function updateBotStatus(
     botId: string,
     isFrozen: boolean,
-    freezeTime = null
+    freezeTime: freeze
 ) {
     try {
         const decryptedPayload = await decrypt();
@@ -106,12 +108,14 @@ export async function updateBotStatus(
             _id: botId,
             userId: decryptedPayload.id,
         });
+
         if (bot) {
             bot.isFrozen = isFrozen;
             if (freezeTime !== null) {
                 bot.freezeTime = freezeTime;
             }
             await bot.save();
+
             revalidatePath('/dashboard/bots');
         }
     } catch (error: any) {
@@ -129,26 +133,52 @@ export async function getBotFrozenStatus(botId: string) {
     }
 }
 
+export async function getBotActivity(botId: string) {
+    try {
+        await dbConnect();
+        const bot = await Bots.findOne({ _id: botId });
+
+        return bot.active;
+    } catch (error: any) {
+        return error.message;
+    }
+}
+
+export async function setBotActivity(botId: string, active: boolean) {
+    try {
+        await dbConnect();
+        const bot = await Bots.findOneAndUpdate({ _id: botId }, { active });
+        revalidatePath('/dashboard/bots');
+        return bot.active;
+    } catch (error: any) {
+        return error.message;
+    }
+}
+
 export async function updateBotDeletionAndFreezeTime(
     userId: string,
     expirationTime: Date
 ) {
     try {
         await dbConnect();
-        const bot = await Bots.findOne({ userId });
-        if (bot) {
+        // Find all bots of the user
+        const userBots = await Bots.find({ userId });
+
+        // Update information for each bot
+        for (const bot of userBots) {
             bot.expirationTime = expirationTime;
-            bot.deletionTime = expirationTime;
             bot.isFrozen = false;
             bot.freezeTime = null;
             await bot.save();
             console.log(
-                `Bot for user ${userId} deletion and freeze time updated.`
+                `Deletion and freeze time updated for all bots of user ${userId}.`
             );
-        } else {
-            console.error(`Bot not found for user ${userId}.`);
         }
     } catch (error: any) {
+        console.error(
+            'Error updating deletion and freeze time:',
+            error.message
+        );
         return error.message;
     }
 }

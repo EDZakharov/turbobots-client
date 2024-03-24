@@ -1,6 +1,6 @@
 'use client';
 
-import { updateBotStatus } from '@/app/actions/bots';
+import { setBotActivity } from '@/app/actions/bots';
 import { Modal } from '@/app/ui/components/basic/modal';
 import {
     ClockSvg,
@@ -17,23 +17,23 @@ export function PlayStopBotBtn({
     size = DEFAULT_SIZES,
     color = DEFAULT_FILL,
     botId,
-    status,
+    active,
     expired,
 }: {
     size?: string;
     color?: string;
     botId: string;
-    status: boolean;
+    active: boolean;
     expired?: boolean;
 }) {
-    const [botStatus, setStatus] = useState<boolean>(status);
+    const [botStatus, setStatus] = useState<boolean>(active);
     const [confirmAction, setConfirmAction] = useState<boolean>(false);
     const [rollDown, setRollDown] = useState<boolean>(false);
 
     const handleCLick = async () => {
         if (confirmAction) {
             try {
-                await updateBotStatus(botId, !botStatus);
+                await setBotActivity(botId, !botStatus);
                 if (rollDown) {
                     setRollDown(false);
                 }
@@ -43,7 +43,7 @@ export function PlayStopBotBtn({
                 setConfirmAction(false);
                 setTimeout(() => {
                     setRollDown(false);
-                }, 3000);
+                }, 1500);
             } catch (error) {}
         } else {
             setConfirmAction(true);
@@ -51,18 +51,18 @@ export function PlayStopBotBtn({
     };
 
     useEffect(() => {
-        if (status !== undefined) {
+        if (active !== undefined) {
             setConfirmAction(false);
         }
-    }, [status, rollDown]);
+    }, [active]);
 
-    if (status === undefined) {
+    if (active === undefined) {
         return <SpinSvg size="17px" />;
     }
 
     return (
         <div className="relative ">
-            {confirmAction && (
+            {confirmAction && !expired && (
                 <Modal
                     setConfirmAction={setConfirmAction}
                     submitOnClick={handleCLick}
@@ -80,7 +80,7 @@ export function PlayStopBotBtn({
                     }
                 />
             )}
-            {status ? (
+            {active ? (
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width={size}

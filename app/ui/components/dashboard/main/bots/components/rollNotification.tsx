@@ -5,7 +5,7 @@ const defaultPositiveStyle =
 const defaultNegativeStyle =
     'flex flex-col w-full text-nowrap rounded-b-md bg-red-400 items-center  text-white animate-fade';
 const defaultExpiredStyle =
-    'flex flex-col w-full text-nowrap rounded-b-md bg-yellow-400 items-center text-white animate-fade-down';
+    'flex flex-col w-full text-nowrap rounded-b-md bg-yellow-400 items-center text-white animate-fade';
 
 export default function RollDownNotification({
     status,
@@ -42,15 +42,17 @@ export default function RollDownNotification({
                 return (
                     <div className={className}>
                         <div className={innerExpiredClassName}>
-                            <span className=" text-gray-700 ">
-                                Subscription expired.{' '}
-                            </span>
-                            <Link
-                                href={'/dashboard/account/subscription'}
-                                className="underline underline-offset-2 text-blue-500 hover:text-blue-700 transition-all"
-                            >
-                                Renew your subscription
-                            </Link>
+                            <div>
+                                <span className=" text-gray-700 ">
+                                    Subscription expired.{' '}
+                                </span>
+                                <Link
+                                    href={'/dashboard/account/subscription'}
+                                    className="underline underline-offset-2 text-blue-500 hover:text-blue-700 transition-all"
+                                >
+                                    Renew your subscription
+                                </Link>
+                            </div>
                         </div>
                     </div>
                 );

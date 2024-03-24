@@ -2,7 +2,7 @@
 
 import { deleteBotByUserIdAndBotId } from '@/app/actions/bots';
 import { SpinSvg } from '@/app/ui/components/svg-components/svg-components';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 const DEFAULT_SIZES = '20px';
 const DEFAULT_FILL = 'white';
@@ -19,12 +19,11 @@ export function DeleteBotBtn({
             setIsLoading(true);
             const data = await deleteBotByUserIdAndBotId(botId);
             if (data) {
-                // setIsLoading(false);
             }
         } catch (error) {}
     };
 
-    useEffect(() => {}, [isLoading]);
+    // useEffect(() => {}, [isLoading]);
 
     if (isLoading) return <SpinSvg size="17px" />;
 

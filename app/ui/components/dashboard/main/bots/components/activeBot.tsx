@@ -1,3 +1,4 @@
+import { getBotActivity } from '@/app/actions/bots';
 import { Coin } from '@/app/ui/components/basic/coin';
 import { EditSvg } from '@/app/ui/components/svg-components/svg-components';
 import Link from 'next/link';
@@ -6,13 +7,15 @@ import { PlayStopBotBtn } from './PlayStopBtn';
 import { DeleteBotBtn } from './deleteBots';
 import RollDownNotification from './rollNotification';
 
-export default function ActiveBot({
+export default async function ActiveBot({
     _id,
     botName,
     coins,
     isFrozen,
     expired,
 }: IBot) {
+    const status = await getBotActivity(_id);
+
     return (
         <div className="flex flex-col items-center gap-2 ">
             <div className="flex items-center w-full  ">
@@ -36,7 +39,7 @@ export default function ActiveBot({
                 <div className="flex gap-2 items-center ">
                     <PlayStopBotBtn
                         botId={_id.toString()}
-                        status={isFrozen}
+                        active={status}
                         expired={expired}
                     />
                     <Link
@@ -59,30 +62,15 @@ export default function ActiveBot({
             </div>
             <div className="w-full z-0 relative overflow-hidden">
                 <RollDownNotification
-                    status={isFrozen}
+                    status={status}
                     expired={expired}
                     className={' flex items-start w-full '}
                     firstOptionText="_"
                     secondOptionText="_"
-                    innerPositiveClassName="select-none w-full bg-custom-green rounded-lg text-transparent h-[1px] "
-                    innerNegativeClassName="select-none w-full bg-red-400 rounded-lg text-transparent h-[1px] "
-                    innerExpiredClassName="select-none w-full bg-yellow-200 dark:bg-yellow-400 rounded-b-lg text-center animate-fade-down h-min p-2"
+                    innerPositiveClassName="select-none w-full bg-custom-green rounded-lg text-transparent h-[2px] "
+                    innerNegativeClassName="select-none w-full bg-red-400 rounded-lg text-transparent h-[2px] "
+                    innerExpiredClassName="select-none w-full bg-yellow-400 rounded-lg text-transparent h-[1px] animate-pulse"
                 />
-                <span
-                    className={`absolute top-${
-                        expired ? '5' : '1'
-                    } right-0 text-[7px]`}
-                >
-                    {isFrozen ? (
-                        <span className="text-custom-green uppercase">
-                            Online
-                        </span>
-                    ) : expired ? (
-                        <span className="text-yellow-400 uppercase"></span>
-                    ) : (
-                        <span className="text-red-400 uppercase">Offline</span>
-                    )}
-                </span>
             </div>
         </div>
     );
